@@ -347,9 +347,19 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-window.addEventListener("scroll", () => {
-  elements.backToTop.hidden = window.scrollY < 640;
-}, { passive: true });
+window.addEventListener(
+  "scroll",
+  () => {
+    elements.backToTop.hidden = window.scrollY < 640;
+    const atBottom =
+      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+    if (atBottom) {
+      const visible = sections.filter((section) => !section.hidden);
+      if (visible.length) setActiveCategory(visible[visible.length - 1].dataset.groupId);
+    }
+  },
+  { passive: true },
+);
 
 window.addEventListener("resize", () => {
   observeSections();

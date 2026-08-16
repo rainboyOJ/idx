@@ -16,9 +16,9 @@ mixin linkIcon(item)
   span.link-icon-frame
     if item.icon
       img.link-icon(src=item.icon alt="" width="40" height="40" loading="lazy" decoding="async")
-      span.link-icon-fallback(hidden style=item.iconBackground ? `background-color: ${item.iconBackground}` : undefined)= item.iconText || initialFor(item.title)
+      span.link-icon-fallback(hidden style=item.iconBackground ? `background-color: ${item.iconBackground}; color: #ffffff` : undefined)= item.iconText || initialFor(item.title)
     else
-      span.link-icon-fallback(style=item.iconBackground ? `background-color: ${item.iconBackground}` : undefined)= item.iconText || initialFor(item.title)
+      span.link-icon-fallback(style=item.iconBackground ? `background-color: ${item.iconBackground}; color: #ffffff` : undefined)= item.iconText || initialFor(item.title)
 
 mixin linkCard(item, group)
   - const host = getHostname(item.url)
