@@ -208,10 +208,11 @@ async function loadLucideIcons() {
     iconsData = JSON.parse(await readFile(lucideIconsPath, "utf8"));
   } catch (error) {
     errors.push(`无法读取 Lucide 图标数据: ${error.message}`);
-    return {};
+    return { icons: {}, refs: {}, sprite: "" };
   }
 
   const icons = {};
+  const symbols = [];
   for (const name of LUCIDE_ICON_WHITELIST) {
     const icon = iconsData.icons?.[name];
     if (!icon || typeof icon.body !== "string") {
@@ -220,8 +221,10 @@ async function loadLucideIcons() {
     }
     const width = icon.width || iconsData.width || 24;
     const height = icon.height || iconsData.height || 24;
-    icons[name] = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" aria-hidden="true" focusable="false" class="lucide lucide-${name}">${icon.body}</svg>`;
+    symbols.push(`<symbol id="lucide-${name}" viewBox="0 0 ${width} ${height}">${icon.body}</symbol>`);
+    icons[name] = `<svg class="lucide lucide-${name}" viewBox="0 0 ${width} ${height}" aria-hidden="true" focusable="false"><use href="#lucide-${name}"></use></svg>`;
   }
+  const sprite = `<svg class="lucide-sprite" aria-hidden="true" focusable="false" hidden>${symbols.join("")}</svg>`;
 
   const categoryIcons = {};
   for (const [title, name] of Object.entries(CATEGORY_ICON_MAP)) {
@@ -231,13 +234,13 @@ async function loadLucideIcons() {
     }
     categoryIcons[title] = name;
   }
-  return { icons, categoryIcons };
+  return { icons, categoryIcons, sprite };
 }
 
 async function main() {
   const config = await loadConfig();
   const { site, navigation, groups } = await validateConfig(config);
-  const { icons: uiIcons, categoryIcons } = await loadLucideIcons();
+  const { icons: uiIcons, categoryIcons, sprite: uiIconSprite } = await loadLucideIcons();
 
   if (errors.length) {
     throw new Error(`配置校验失败:\n${errors.map((error) => `- ${error}`).join("\n")}`);
@@ -253,6 +256,7 @@ async function main() {
     stats,
     uiIcons,
     categoryIcons,
+    uiIconSprite,
     pretty: true,
   });
 

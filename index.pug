@@ -22,11 +22,7 @@ mixin linkIcon(item)
 
 mixin linkCard(item, group)
   - const host = getHostname(item.url)
-  a.link-card(href=item.url target="_blank" rel="noopener noreferrer"
-    data-search-title=item.title
-    data-search-description=item.description || ""
-    data-search-domain=host
-    data-search-category=group.title)
+  a.link-card(href=item.url target="_blank" rel="noopener noreferrer")
     +linkIcon(item)
     span.link-copy
       span.link-title= item.title
@@ -73,6 +69,7 @@ html(lang="zh-CN")
       })();
     script(src="app.js" defer)
   body
+    != uiIconSprite
     a.skip-link(href="#main-content") 跳到主要内容
 
     header#workbar.workbar
