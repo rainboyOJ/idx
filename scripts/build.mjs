@@ -11,6 +11,27 @@ const projectRoot = resolve(scriptDirectory, "..");
 const configPath = resolve(projectRoot, "config.yaml");
 const templatePath = resolve(projectRoot, "index.pug");
 const outputPath = resolve(projectRoot, "index.html");
+const lucideIconsPath = resolve(projectRoot, "node_modules/@iconify-json/lucide/icons.json");
+
+const LUCIDE_ICON_WHITELIST = [
+  "globe",
+  "list-checks",
+  "users",
+  "square-code",
+  "book-open",
+  "notebook-pen",
+  "wrench",
+  "archive",
+  "bot",
+  "package-open",
+  "network",
+  "search",
+  "x",
+  "sun",
+  "moon",
+  "arrow-up",
+  "external-link",
+];
 
 const errors = [];
 const warnings = [];
@@ -167,9 +188,33 @@ async function writeAtomically(content) {
   }
 }
 
+async function loadLucideIcons() {
+  let iconsData;
+  try {
+    iconsData = JSON.parse(await readFile(lucideIconsPath, "utf8"));
+  } catch (error) {
+    errors.push(`无法读取 Lucide 图标数据: ${error.message}`);
+    return {};
+  }
+
+  const icons = {};
+  for (const name of LUCIDE_ICON_WHITELIST) {
+    const icon = iconsData.icons?.[name];
+    if (!icon || typeof icon.body !== "string") {
+      errors.push(`Lucide 图标不存在: ${name}`);
+      continue;
+    }
+    const width = icon.width || iconsData.width || 24;
+    const height = icon.height || iconsData.height || 24;
+    icons[name] = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" aria-hidden="true" focusable="false" class="lucide lucide-${name}">${icon.body}</svg>`;
+  }
+  return icons;
+}
+
 async function main() {
   const config = await loadConfig();
   const { site, navigation, groups } = await validateConfig(config);
+  const uiIcons = await loadLucideIcons();
 
   if (errors.length) {
     throw new Error(`配置校验失败:\n${errors.map((error) => `- ${error}`).join("\n")}`);
@@ -183,6 +228,7 @@ async function main() {
     site,
     navigation,
     stats,
+    uiIcons,
     pretty: true,
   });
 

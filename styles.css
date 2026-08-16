@@ -216,7 +216,7 @@ svg {
   background: var(--surface-subtle);
 }
 
-.theme-icon,
+.theme-icon svg,
 .back-to-top svg {
   width: 20px;
   height: 20px;

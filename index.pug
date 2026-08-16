@@ -89,11 +89,8 @@ html(lang="zh-CN")
             span#site-subtitle= site.description
 
         button#theme-toggle.icon-button(type="button" aria-label="切换到深色主题" title="切换主题")
-          svg.theme-icon.theme-icon-moon(viewBox="0 0 24 24" aria-hidden="true")
-            path(d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z")
-          svg.theme-icon.theme-icon-sun(viewBox="0 0 24 24" aria-hidden="true")
-            circle(cx="12" cy="12" r="4")
-            path(d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41")
+          span.theme-icon.theme-icon-moon!= uiIcons.moon
+          span.theme-icon.theme-icon-sun!= uiIcons.sun
 
     #top(aria-hidden="true")
 
@@ -121,5 +118,4 @@ html(lang="zh-CN")
       p#footer-summary #{site.title} · 数据更新于 #{navigation.updatedAt}
 
     button#back-to-top.back-to-top(type="button" aria-label="返回顶部" title="返回顶部" hidden)
-      svg(viewBox="0 0 24 24" aria-hidden="true")
-        path(d="m18 15-6-6-6 6")
+      span!= uiIcons["arrow-up"]
