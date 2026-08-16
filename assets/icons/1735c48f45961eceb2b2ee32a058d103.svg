@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="CppBook">
+  <rect width="64" height="64" rx="14" fill="#087c6c"/>
+  <path d="M14 18.5c0-1.4 1.1-2.5 2.5-2.5H29c4.4 0 7 2.4 7 6.2v24.3c0-2.6-2.1-4.8-4.7-4.8H16.5A2.5 2.5 0 0 1 14 39.2z" fill="#ffffff"/>
+  <path d="M50 18.5c0-1.4-1.1-2.5-2.5-2.5H35c-4.4 0-7 2.4-7 6.2v24.3c0-2.6 2.1-4.8 4.7-4.8h14.8a2.5 2.5 0 0 0 2.5-2.5z" fill="#edf7f4"/>
+  <path d="M32 18v27.5" stroke="#087c6c" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M20 28h8M20 34h8M36 28h8M36 34h8" stroke="#087c6c" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M26 45.5h12" stroke="#087c6c" stroke-width="2.4" stroke-linecap="round" opacity=".55"/>
+</svg>

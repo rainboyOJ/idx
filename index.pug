@@ -1,0 +1,125 @@
+- const initialFor = (value) => Array.from(String(value || "?"))[0]?.toLocaleUpperCase("zh-CN") || "?"
+- const normalize = (value) => String(value || "").normalize("NFKC").toLocaleLowerCase("zh-CN").trim()
+- const getHostname = (value) => { try { return new URL(value).hostname.replace(/^www\./, "") } catch { return value } }
+
+mixin categoryIcon(group)
+  if group.icon
+    img.category-icon(src=group.icon alt="" width="24" height="24" loading="lazy" decoding="async")
+    span.category-fallback(hidden)= initialFor(group.title)
+  else
+    span.category-fallback= initialFor(group.title)
+
+mixin sectionIcon(group)
+  if group.icon
+    img.section-icon(src=group.icon alt="" width="24" height="24" loading="lazy" decoding="async")
+    span.section-fallback(hidden)= initialFor(group.title)
+  else
+    span.section-fallback= initialFor(group.title)
+
+mixin linkIcon(item)
+  span.link-icon-frame
+    if item.icon
+      img.link-icon(src=item.icon alt="" width="34" height="34" loading="lazy" decoding="async")
+      span.link-icon-fallback(hidden style=item.iconBackground ? `background-color: ${item.iconBackground}` : undefined)= item.iconText || initialFor(item.title)
+    else
+      span.link-icon-fallback(style=item.iconBackground ? `background-color: ${item.iconBackground}` : undefined)= item.iconText || initialFor(item.title)
+
+mixin linkCard(item)
+  - const host = getHostname(item.url)
+  a.link-card(href=item.url target="_blank" rel="noopener noreferrer")
+    +linkIcon(item)
+    span.link-copy
+      span.link-title= item.title
+      span.link-description= item.description || host
+      if item.description && normalize(item.description) !== normalize(host)
+        span.link-host= host
+      span.sr-only （在新标签页打开）
+    span.external-mark(aria-hidden="true") ↗
+
+mixin category(group)
+  li
+    a.category-link(href=`#group-${group.id}` data-group-id=String(group.id))
+      +categoryIcon(group)
+      span= group.title
+      span.category-count(aria-label=`${group.items.length} 个网址`)= group.items.length
+
+mixin directorySection(group)
+  section.directory-section(id=`group-${group.id}` data-group-id=String(group.id))
+    .section-heading
+      +sectionIcon(group)
+      h2= group.title
+      span #{group.items.length} 个
+    .link-grid
+      each item in group.items
+        +linkCard(item)
+
+// 此文件由 config.yaml 和 index.pug 生成，请勿直接修改 index.html。
+doctype html
+html(lang="zh-CN")
+  head
+    meta(charset="UTF-8")
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    meta(name="description" content=site.metaDescription)
+    meta(name="color-scheme" content="light dark")
+    title= site.title
+    link(rel="icon" href="favicon.svg" type="image/svg+xml")
+    link(rel="stylesheet" href="styles.css")
+    script.
+      (() => {
+        try {
+          const savedTheme = localStorage.getItem("rainboy-nav-theme");
+          const systemTheme = matchMedia("(prefers-color-scheme: dark)").matches
+            ? "dark"
+            : "light";
+          document.documentElement.dataset.theme = savedTheme || systemTheme;
+        } catch {
+          document.documentElement.dataset.theme = "light";
+        }
+      })();
+    script(src="app.js" defer)
+  body
+    a.skip-link(href="#main-content") 跳到主要内容
+
+    header.site-header
+      .header-inner
+        a.brand(href="#top" aria-label=`返回 ${site.title}顶部`)
+          span.brand-mark(aria-hidden="true") R
+          span.brand-copy
+            strong#site-title= site.title
+            span#site-subtitle= site.description
+
+        button#theme-toggle.icon-button(type="button" aria-label="切换到深色主题" title="切换主题")
+          svg.theme-icon.theme-icon-moon(viewBox="0 0 24 24" aria-hidden="true")
+            path(d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z")
+          svg.theme-icon.theme-icon-sun(viewBox="0 0 24 24" aria-hidden="true")
+            circle(cx="12" cy="12" r="4")
+            path(d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.66 6.34l1.41-1.41")
+
+    #top(aria-hidden="true")
+
+    main#main-content.page-shell(tabindex="-1")
+      section.page-intro(aria-labelledby="page-title")
+        .intro-copy
+          h1#page-title= site.title
+          p#page-summary #{stats.totalGroups} 个分类 · #{stats.totalItems} 个网址
+
+      .content-layout
+        aside.category-sidebar(aria-label="网址分类")
+          .category-heading
+            span 分类
+            span#category-total= stats.totalGroups
+          nav(aria-label="按分类跳转")
+            ul#category-list.category-list
+              each group in navigation.groups
+                +category(group)
+
+        #directory.directory(aria-busy="false")
+          each group in navigation.groups
+            +directorySection(group)
+
+    footer.site-footer
+      p#footer-summary #{site.title} · 数据更新于 #{navigation.updatedAt}
+
+    button#back-to-top.back-to-top(type="button" aria-label="返回顶部" title="返回顶部" hidden)
+      svg(viewBox="0 0 24 24" aria-hidden="true")
+        path(d="m18 15-6-6-6 6")

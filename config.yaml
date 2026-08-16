@@ -1,0 +1,459 @@
+---
+site:
+  title: Rainboy 导航
+  description: 学习、竞赛与常用工具
+  metaDescription: Rainboy 常用网址导航
+navigation:
+  updatedAt: '2026-08-16'
+  groups:
+  - id: '1'
+    title: 网站
+    icon: assets/icons/material-symbols_ad-group-outline.svg
+    items:
+    - title: ROJ
+      url: https://roj.ac.cn
+      description: roj
+      icon: assets/icons/4a0887660ae44ecf717605b63ea1f771.png
+    - title: Rbook
+      url: https://rbook.roj.ac.cn
+      description: rbook
+      icon: assets/icons/431fdf0f8e9e5910ffb26a531c2ab84f.png
+    - title: Rbook2
+      url: https://rbook2.roj.ac.cn
+      description: 全新的感觉
+      icon: assets/icons/8139e7daaeb6e7138dedb37321a47e7d.png
+    - title: rbook_old
+      url: https://rbook_old.roj.ac.cn
+      icon: assets/icons/431fdf0f8e9e5910ffb26a531c2ab84f.png
+    - title: CppBook
+      url: https://cppbook.roj.ac.cn
+      icon: assets/icons/1735c48f45961eceb2b2ee32a058d103.svg
+    - title: CppBook_old
+      url: https://cppbook_old.roj.ac.cn
+      icon: assets/icons/80a9440d85793212eb31a9f61df9ed68.png
+    - title: 数学笔记
+      url: http://math.roj.ac.cn/#/
+      icon: assets/icons/vscode-icons_file-type-libreoffice-math.svg
+    - title: 可道云
+      url: https://kod.roj.ac.cn?user/index/loginSubmit&name=guest&password=guest&auto=1
+      icon: assets/icons/e03d3557c8a9b54702c406fbcf13d3a0.png
+    - title: 我录制的教程
+      url: http://video.roj.ac.cn
+      icon: assets/icons/noto-v1_video-camera.svg
+    - title: 资料网盘
+      url: https://ol.roj.ac.cn/
+      description: OpenList
+      icon: assets/icons/59247e454f8a16d7729c4fda0e58db92.svg
+    - title: 资料网盘
+      url: https://d.roj.ac.cn
+      description: Alist
+      icon: assets/icons/d042e207a6b29a2d74a977a1621a96de.png
+    - title: 我的GitHub
+      url: https://github.com/rainboylvx
+      icon: assets/icons/skill-icons_github-dark.svg
+    - title: cpphub
+      url: https://cpphub.roj.ac.cn/
+      description: 我的c++学习笔记
+      icon: assets/icons/e02ea8b2e60bdeab4e365f38cf2edbe9.svg
+    - title: pcs
+      url: https://pcs.roj.ac.cn
+      description: 我的写的题目解析(不更新了)
+      icon: assets/icons/fdb1b89f0f92296e275fb4e902b50a78.ico
+    - title: pcs2
+      url: https://pcs2.roj.ac.cn
+      icon: assets/icons/32bda3243bf20fb4ffd6bb497e408736.svg
+    - title: 我的笔记
+      url: https://notes.roj.ac.cn
+      icon: assets/icons/twemoji_alien-monster.svg
+    - title: dsa1
+      url: https://anima1.roj.ac.cn
+      description: 我写的算法动画1
+      icon: assets/icons/13ae86e68babaa1826749d86c00fb82e.png
+    - title: dsa2
+      url: https://anima2.roj.ac.cn
+      description: 我写的算法动画2
+      icon: assets/icons/b16069f8a0ff7a3743ff1fa9456f5441.ico
+    - title: dsa3
+      url: https://dsa3.roj.ac.cn
+      description: 我写的算法动画3
+      icon: assets/icons/a36dbb45e15343a59837f48a2b64bf67.png
+    - title: AI
+      url: https://ai.roj.ac.cn/
+      description: 基于 chatgpt-next-web 项目
+      icon: assets/icons/609d8b0050703f67b45caa3518224f2f.png
+    - title: 我的Zotera文档
+      url: https://zotero.roj.ac.cn/
+      description: 我收集的一些论文与教程
+      icon: assets/icons/academicons_zotero-square.svg
+    - title: 我的Blog
+      url: https://blog.roj.ac.cn
+      description: 博客
+      icon: assets/icons/f39ee8f14a6900c5e43a415504878e8f.png
+    - title: dsa3_new
+      url: https://dsa3.roj.ac.cn/new/
+      description: 还是我写的动画
+      icon: assets/icons/a36dbb45e15343a59837f48a2b64bf67.png
+    - title: 在线伪代码
+      url: https://pseudocode.roj.ac.cn/
+      description: 给rbook使用
+      icon: assets/icons/dinkie-icons_code-filled.svg
+    - title: excalidraw
+      url: https://excalidraw.roj.ac.cn/
+      description: host on roj
+      icon: assets/icons/c3e150f958028cbe575a96f9e901ad47.png
+    - title: OI文章收集
+      url: https://gist.github.com/Rainboylvx/4223067a0ab2561280fa7996d7c9ac06
+      icon: assets/icons/skill-icons_github-dark.svg
+  - id: '6'
+    title: 题单
+    icon: assets/icons/material-symbols_folder-outline.svg
+    items:
+    - title: 牛客csp-j
+      url: https://ac.nowcoder.com/acm/skill/noip-pj
+      icon: assets/icons/375b0ce58e9628efc69df3acc07f189a.ico
+    - title: 牛客 CSP-S
+      url: https://ac.nowcoder.com/acm/skill/noip-tg
+      icon: assets/icons/375b0ce58e9628efc69df3acc07f189a.ico
+    - title: 牛客 省选
+      url: https://ac.nowcoder.com/acm/skill/noi
+      icon: assets/icons/375b0ce58e9628efc69df3acc07f189a.ico
+    - title: CSP启蒙题库
+      url: https://www.csp-j.com/d/ybtbas/p
+      icon: assets/icons/87d2071b6d6c705f39dfb4feba1f8930.png
+    - title: VJ洛谷题单汇总
+      url: https://vjudge.net/article/5268
+      icon: assets/icons/197483b4b2e38af90f4b3e9546ccf32a.ico
+    - title: 罗勇军《算法竞赛》题单
+      url: https://vjudge.net/article/3284
+      icon: assets/icons/197483b4b2e38af90f4b3e9546ccf32a.ico
+    - title: 李煜东《算法竞赛进阶指南》
+      url: https://vjudge.net/article/3573
+      icon: assets/icons/197483b4b2e38af90f4b3e9546ccf32a.ico
+    - title: 长江大学算法培训题单
+      url: https://vjudge.net/article/4776
+      icon: assets/icons/197483b4b2e38af90f4b3e9546ccf32a.ico
+    - title: 深入浅出程序设计竞赛(基础篇)
+      url: https://vjudge.net/article/4196
+      icon: assets/icons/197483b4b2e38af90f4b3e9546ccf32a.ico
+    - title: 深入浅出程序设计竞赛(进阶篇)
+      url: https://vjudge.net/article/3470
+      icon: assets/icons/197483b4b2e38af90f4b3e9546ccf32a.ico
+    - title: "《信息学奥赛一本通》提高版题单"
+      url: https://vjudge.net/article/3055
+      icon: assets/icons/197483b4b2e38af90f4b3e9546ccf32a.ico
+    - title: 能力提升综合题单
+      url: https://www.luogu.com.cn/training/9391
+      description: luogu
+      icon: assets/icons/93871b8da852337b83d49c7b55f0db84.ico
+    - title: 新手动规
+      url: https://www.luogu.com.cn/training/1060#problems
+      icon: assets/icons/b8af650c98970c4500367e7507bcc7e8.ico
+    - title: "\U0001F392背包入门"
+      url: https://www.luogu.com.cn/training/8917#problems
+      icon: assets/icons/b4bfd965f57d0637d12b603b9b664d0d.ico
+    - title: 完全背包题单
+      url: https://www.luogu.com.cn/training/680112#information
+      icon: assets/icons/5296b12fe11d4b9804859661c223bd04.ico
+  - id: '3'
+    title: 团队
+    icon: assets/icons/material-symbols_folder-outline.svg
+    items:
+    - title: luogu-Team
+      url: https://www.luogu.com.cn/team/75907
+      description: 洛谷团队
+      icon: assets/icons/33bf2a465333d40adc9a3448da6a3001.ico
+    - title: vjudge-Team
+      url: https://vjudge.net.cn/group/lego
+      icon: assets/icons/50a97ac038067f28da49b88b18c2b20e.gif
+    - title: vjudge-team
+      url: https://vjudge.net/group/rainboylvx
+      icon: assets/icons/ef39c14288422603f8dfad625742367b.jpg
+  - id: '7'
+    title: OJ
+    icon: assets/icons/material-symbols_folder-outline.svg
+    items:
+    - title: AtCoder
+      url: https://atcoder.jp/
+      icon: assets/icons/733fcadf99f2c6f00c3f96796dd40718.png
+    - title: codeforces
+      url: https://codeforces.com/
+      icon: assets/icons/be51778d35fa3329527aa622229143ca.png
+    - title: vjudge
+      url: https://vjudge.net/
+      icon: assets/icons/197483b4b2e38af90f4b3e9546ccf32a.ico
+    - title: luogu
+      url: https://www.luogu.com.cn/
+      icon: assets/icons/33bf2a465333d40adc9a3448da6a3001.ico
+    - title: usaco.training
+      url: https://usaco.training/
+      icon: assets/icons/e2a36ebd561692984d2199fe16a68cac.gif
+    - title: usaco
+      url: https://usaco.org/
+      icon: assets/icons/5f89635ff71452d6b00252ac7a59fc42.ico
+  - id: '8'
+    title: 知识
+    icon: assets/icons/material-symbols_folder-outline.svg
+    items:
+    - title: csdiy
+      url: https://csdiy.wiki/
+      icon: assets/icons/732ad3c4c2ac45424a20b80b8f83d7bf.png
+    - title: NJU 计算机问题求解
+      url: http://cslabcms.nju.edu.cn/problem_solving/index.php/2015%E7%BA%A7
+      description: 南京大学 计算机问题求解 课程,配合 https://gist.github.com/Rainboylvx/7dec3b8100f53ecee56708ca1d7a269d 使用
+      icon: assets/icons/9a04fd08b72800d66013fc5bdeb5a82a
+    - title: OI-Wiki
+      url: https://oi-wiki.org/
+      icon: assets/icons/faec85dc8d1418dd21dd1dbc9d9adc24.ico
+    - title: oi-beats
+      url: https://entiesci.github.io/oi-beats/site/
+      description: 面向中阶段 OI 学习者
+    - title: usaco guide
+      url: https://usaco.guide/gold/combo?lang=cpp
+      icon: assets/icons/424f1d894c82d6387fb16c9ba9577068.png
+    - title: leetcode cookbook
+      url: https://books.halfrost.com/leetcode/
+      icon: assets/icons/3a5ab02d0ccb705223299849bc143b52.png
+    - title: cp-algo
+      url: https://cp-algorithms.com/
+      icon: assets/icons/d29ba76039f1f5037cc4772aa8a3f33c.ico
+    - title: 厦门大学 离散数学
+      url: https://space.bilibili.com/484021447/channel/seriesdetail?sid=372883
+      icon: assets/icons/5af1e8c4152f6ce273d5c436a597d95b.ico
+    - title: 图论与算法GTA
+      url: http://ws.nju.edu.cn/courses/gta
+      iconText: GTA
+      iconBackground: "#020202DE"
+    - title: 图论与算法GTA
+      url: https://www.bilibili.com/video/BV1dS411c7vy
+      icon: assets/icons/5af1e8c4152f6ce273d5c436a597d95b.ico
+    - title: Zlib-wikipedia
+      url: https://en.wikipedia.org/wiki/Z-Library
+      iconText: Z-library
+      iconBackground: "#411EB36B"
+    - title: 安娜的档案
+      url: https://zh.annas-archive.org/
+      icon: assets/icons/63431849ffbddc71e2bd4f89d862eb98.png
+    - title: libgen
+      url: https://www.ooopn.com/tool/libgen/
+      icon: assets/icons/830a1e9b79400a4a226ae3950eabf54d.png
+    - title: Sci-Hub
+      url: https://www.ooopn.com/tool/scihub/
+      icon: assets/icons/6526ad1f91d63cd2454faa44e53581d8.png
+    - title: 清华计算机课程攻略
+      url: https://github.com/PKUanonym/REKCARC-TSC-UHT
+      description: 有卷子,刷分攻略,实验报告,有指导意义
+      icon: assets/icons/skill-icons_github-light.svg
+    - title: Pecco算法学习笔记
+      url: https://zhuanlan.zhihu.com/p/105467597
+      description: 来自知乎用户Pecco
+      icon: assets/icons/6db394406f1813d2f90543c1320ed79c.png
+    - title: cppreference中文
+      url: https://cppreference.cn/w/
+      description: c++在线文档[中文]
+      icon: assets/icons/9752a4edf9ebfbb6389512e2f026dff2.ico
+    - title: cppreference英文
+      url: https://en.cppreference.com/w/
+      description: c++在线文档
+      icon: assets/icons/758ac070a73dfe40e9735c14a3810006.ico
+    - title: 将炎炎
+      url: https://jyywiki.cn/OI.md
+      description: 算法竞赛入门系列
+      icon: assets/icons/09fa2ba6d30360441536ddf76abbe4f9.ico
+    - title: codedex
+      url: https://www.codedex.io/
+      description: 各种语言 通过游戏入门
+      icon: assets/icons/ea7ff8cdd8131e8e2d534bcc8e89a5fa.png
+  - id: '9'
+    title: Blog
+    icon: assets/icons/material-symbols_folder-outline.svg
+    items:
+    - title: alex-wei
+      url: https://www.cnblogs.com/alex-wei/p/contents.html
+      icon: assets/icons/50f19117028f888268b8328c9d42ed06.png
+    - title: 自为风月马前卒
+      url: https://www.cnblogs.com/zwfymqz/p/9338689.html
+      icon: assets/icons/e153a71ec1a982a06bcc3f31faf50702.png
+    - title: alex-wei
+      url: https://www.cnblogs.com/alex-wei
+      icon: assets/icons/070fbdf39b2b58409dbf83f073d93017.ico
+  - id: '4'
+    title: 工具
+    icon: assets/icons/material-symbols_folder-outline.svg
+    items:
+    - title: 画板
+      url: https://handraw.top/
+      icon: assets/icons/04d9e1a2f8094e7d93e920c7c6dd9d97.ico
+    - title: 画板2
+      url: https://excalidraw.com/
+      description: excalidraw官方
+      icon: assets/icons/9395d7c906e4784c19af9c91a0645055.png
+    - title: 流程图
+      url: https://app.diagrams.net/
+      description: drawio
+      icon: assets/icons/201fe56c6ace3b8147cdba9a49d5acf2.png
+    - title: IT-tools
+      url: https://it.slimeoj.online/
+      icon: assets/icons/5e6b75af2bf8afab80776972a3a56c10.ico
+    - title: gh-proxy
+      url: https://gh-proxy.com/
+      description: 代理下载github上的代码
+      icon: assets/icons/logos_github-octocat.svg
+    - title: MarkDown手册
+      url: https://www.markdownguide.org/cheat-sheet/
+      description: markdownguide
+      icon: assets/icons/5d71789d6e32bfeaffd6ea0183d23051.png
+    - title: Latex公式符号
+      url: https://gitmind.com/tw/faq/formula-list.html
+      description: cheatsheet
+      icon: assets/icons/b85f260dd31c7c112f4387a814ce3743.ico
+    - title: webwhiteboard
+      url: https://webwhiteboard.com/
+      icon: assets/icons/6b326eb83c2bd6a3bcc4caa2cae8a58b.ico
+    - title: ggb国内镜像
+      url: https://ggb123.cn/classic
+      description: ggb123
+      icon: assets/icons/d09eeb64aefe8aa6613b98e4bf4c6e2e.png
+    - title: pastebin
+      url: https://pastebin.com/
+      description: 在线代码剪贴板
+      icon: assets/icons/01312e7b0e1ab495939ff885aa19461b.ico
+    - title: 图生成
+      url: https://csacademy.com/app/graph_editor/
+      icon: assets/icons/d35fc10031010fc9dcac783bf058bbf0.png
+    - title: 打字练习
+      url: https://www.ldou.com/app/#/appUser/typing
+      icon: assets/icons/61112eccc6648e0c122709d5d4c566ae.svg
+    - title: 算法动画algoanim
+      url: http://www.algoanim.ide.sk/
+      icon: assets/icons/1c34473319b532904745d8569d040a6c.ico
+    - title: 算法动画visualgo
+      url: https://visualgo.net/zh
+      icon: assets/icons/d2d1782d8944ec2f865d9b334b8fe9ce.png
+    - title: pastebin
+      url: https://pastebin.com/
+      description: 老牌在线贴文字
+      icon: assets/icons/55ae72fe79598450c5f692aabf1663d0.ico
+    - title: note.ms
+      url: https://note.ms/
+      description: 又一个在线贴文字
+      icon: assets/icons/9adf7b6839cd0b5bb8f83301b55c308c.png
+    - title: 动画3
+      url: https://yongdanielliang.github.io/animation/animation.html
+      icon: assets/icons/material-icon-theme_folder-animation.svg
+    - title: 动画4
+      url: https://www.chrislaux.com/
+      icon: assets/icons/86ff1fcea25bba9cfcebea0e0a7fc7bd.png
+    - title: usfca大学算法动画
+      url: https://www.cs.usfca.edu/~galles/visualization/Algorithms.html
+      icon: assets/icons/32e9844d5acb076766ae96f44d954fe8.ico
+    - title: selfboot算法动画
+      url: https://gallery.selfboot.cn/zh/algorithms
+      icon: assets/icons/29fba5173667bdbb3a909787abf2cc40.ico
+    - title: Geogebra1
+      url: https://kz16.top/ggb/ggbpptReadMe.html
+      description: GeoGebra必学必用经验
+      icon: assets/icons/c9d2cde2ab8de51a5524bd7146828b75.svg
+    - title: ggb online
+      url: https://kz16.top/ggb/
+      icon: assets/icons/8db9fc77862d0e0fe4d7b0ad04a3e388.svg
+    - title: wiki-希腊字母
+      url: https://en.wikipedia.org/wiki/Alpha#Greek
+      icon: assets/icons/vscode-icons_file-type-wikitext.svg
+    - title: 数学公式
+      url: https://www.latexlive.com/
+      icon: assets/icons/5aeb3d790301fc06163b056da1082a5e.png
+    - title: 91math
+      url: https://www.91maths.com/
+      icon: assets/icons/vscode-icons_file-type-libreoffice-math.svg
+    - title: 希腊字母发音
+      url: https://www.youtube.com/watch?v=S8hjU8Mkv1U
+      icon: assets/icons/openmoji_youtube.svg
+    - title: 希腊字母在线发音
+      url: https://www.greekpod101.com/greek-vocabulary-lists/greek-alphabet
+      description: 点击发音
+      icon: assets/icons/557dd9f84b239f0b12381bc2ed46b4b2.ico
+    - title: 嘉立创 EDA
+      url: https://lceda.cn/
+      description: EDA
+      icon: assets/icons/114c74b8f95d182663043ac612fd287d.png
+    - title: GGB123
+      url: https://www.ggb123.cn/
+      description: 国内的一个GGB平台
+      icon: assets/icons/ae428e00f70a7e260601e10fdbff43f2.png
+    - title: 屏幕分享
+      url: https://app.screego.net/
+      description: screego
+      icon: assets/icons/68a907db91d82fb762d4a7f7fcb31def.png
+    - title: Simpletex
+      url: https://simpletex.net/
+      description: 公式编辑器,文字识别
+      icon: assets/icons/2cb8e7eedf727eef906db5f6ada2218a.ico
+    - title: graphviz-online
+      url: https://magjac.com/graphviz-visual-editor/
+      description: graphviz-visual-edit
+      icon: assets/icons/3a44b72941ff21732aec301c0641dcf0.png
+    - title: '0x0'
+      url: https://0x0.st/
+      description: 命令行传文本,文件
+      icon: assets/icons/logos_terminal.svg
+    - title: 命令行剪切板
+      url: https://termbin.com/
+      description: echo just testing! | nc termbin.com 9999
+    - title: viz-js
+      url: https://viz-js.com/
+      description: 在线graphviz
+    - title: oeis
+      url: https://oeis.org/?language=chineseS
+      description: 整数数列线上大全
+      icon: assets/icons/20a66dc203099967339203a67774523d.ico
+    - title: chat-with-geogebra
+      url: https://github.com/tiwe0/chat-with-geogebra
+      description: AI 对话,绘制轻量的数学图
+      icon: assets/icons/04b0556df6dd38f4eeeb4298e329f75b.png
+    - title: algorithm-visualizer
+      url: https://algorithm-visualizer.org/
+      description: 需要学习一下这个的语法,然后自己写动画
+      icon: assets/icons/408f47e0f9ede0a9bed9d7c061f21871.png
+  - id: '11'
+    title: 资料
+    items:
+    - title: 历年真题
+      url: https://github.com/winterant/oi
+      description: 包括初赛pdf,复赛数据
+      icon: assets/icons/logos_github-octocat.svg
+  - id: '10'
+    title: AIa
+    icon: assets/icons/material-symbols_folder-outline.svg
+    items:
+    - title: 官方DeepSeek
+      url: https://chat.deepseek.com/
+      description: 思维深度比较深
+      icon: assets/icons/7d39c87dca7e534b0c4d17f3db1bf37c.png
+    - title: AICNN
+      url: https://aicnn.cn/
+      description: 我常用这个
+      icon: assets/icons/9ebfe77e57cf45ea9ec7ec792d230172.ico
+    - title: Gemi
+      url: https://gemini.google.com/app
+      description: Google的AI
+      icon: assets/icons/af1de7d7e1b421b7d8190bb53bb0066e.png
+  - id: '12'
+    title: 资源
+    items:
+    - title: maple-font
+      url: https://github.com/subframe7536/maple-font
+      description: 编程字体
+      icon: assets/icons/da8adb6cc6345c942472875b3ea1aeab.png
+  - id: '5'
+    title: 关联
+    icon: assets/icons/material-symbols_folder-outline.svg
+    items:
+    - title: NOI官网
+      url: https://www.noi.cn/
+      icon: assets/icons/twemoji_school.svg
+    - title: data.noi
+      url: http://data.noip.space
+      icon: assets/icons/658e583d2ac50337e3c5d0ab94a536ce.ico
+    - title: OIerDb
+      url: https://oier.baoshuo.dev/
+      icon: assets/icons/ddeffe51d2e02338b820e9d58d696dc3.png
