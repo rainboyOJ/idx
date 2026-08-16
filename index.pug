@@ -3,30 +3,30 @@
 - const getHostname = (value) => { try { return new URL(value).hostname.replace(/^www\./, "") } catch { return value } }
 
 mixin categoryIcon(group)
-  if group.icon
-    img.category-icon(src=group.icon alt="" width="24" height="24" loading="lazy" decoding="async")
-    span.category-fallback(hidden)= initialFor(group.title)
-  else
-    span.category-fallback= initialFor(group.title)
+  span.category-icon(aria-hidden="true")!= uiIcons[categoryIcons[group.title] || "globe"]
 
-mixin sectionIcon(group)
-  if group.icon
-    img.section-icon(src=group.icon alt="" width="24" height="24" loading="lazy" decoding="async")
-    span.section-fallback(hidden)= initialFor(group.title)
-  else
-    span.section-fallback= initialFor(group.title)
+mixin category(group)
+  li
+    a.category-link(href=`#group-${group.id}` data-group-id=String(group.id))
+      +categoryIcon(group)
+      span.category-title= group.title
+      span.category-count(data-total=group.items.length)= group.items.length
 
 mixin linkIcon(item)
   span.link-icon-frame
     if item.icon
-      img.link-icon(src=item.icon alt="" width="34" height="34" loading="lazy" decoding="async")
+      img.link-icon(src=item.icon alt="" width="40" height="40" loading="lazy" decoding="async")
       span.link-icon-fallback(hidden style=item.iconBackground ? `background-color: ${item.iconBackground}` : undefined)= item.iconText || initialFor(item.title)
     else
       span.link-icon-fallback(style=item.iconBackground ? `background-color: ${item.iconBackground}` : undefined)= item.iconText || initialFor(item.title)
 
-mixin linkCard(item)
+mixin linkCard(item, group)
   - const host = getHostname(item.url)
-  a.link-card(href=item.url target="_blank" rel="noopener noreferrer")
+  a.link-card(href=item.url target="_blank" rel="noopener noreferrer"
+    data-search-title=item.title
+    data-search-description=item.description || ""
+    data-search-domain=host
+    data-search-category=group.title)
     +linkIcon(item)
     span.link-copy
       span.link-title= item.title
@@ -34,24 +34,19 @@ mixin linkCard(item)
       if item.description && normalize(item.description) !== normalize(host)
         span.link-host= host
       span.sr-only （在新标签页打开）
-    span.external-mark(aria-hidden="true") ↗
-
-mixin category(group)
-  li
-    a.category-link(href=`#group-${group.id}` data-group-id=String(group.id))
-      +categoryIcon(group)
-      span= group.title
-      span.category-count(aria-label=`${group.items.length} 个网址`)= group.items.length
+    span.link-external(aria-hidden="true")!= uiIcons["external-link"]
 
 mixin directorySection(group)
   section.directory-section(id=`group-${group.id}` data-group-id=String(group.id))
-    .section-heading
-      +sectionIcon(group)
-      h2= group.title
-      span #{group.items.length} 个
+    .section-heading-row
+      h2.section-heading
+        span.section-icon(aria-hidden="true")!= uiIcons[categoryIcons[group.title] || "globe"]
+        span.section-title= group.title
+      span.section-count(data-total=group.items.length)= group.items.length
+      span.section-rule(aria-hidden="true")
     .link-grid
       each item in group.items
-        +linkCard(item)
+        +linkCard(item, group)
 
 // 此文件由 config.yaml 和 index.pug 生成，请勿直接修改 index.html。
 doctype html
@@ -80,28 +75,31 @@ html(lang="zh-CN")
   body
     a.skip-link(href="#main-content") 跳到主要内容
 
-    header.site-header
-      .header-inner
+    header#workbar.workbar
+      .workbar-inner
         a.brand(href="#top" aria-label=`返回 ${site.title}顶部`)
           span.brand-mark(aria-hidden="true") R
-          span.brand-copy
-            strong#site-title= site.title
-            span#site-subtitle= site.description
+          h1.brand-title= site.title
+
+        .workbar-search
+          .search-field(role="search")
+            span.search-icon(aria-hidden="true")!= uiIcons.search
+            label.sr-only(for="site-search") 搜索网址
+            input#site-search(type="search" placeholder="搜索网址" autocomplete="off" spellcheck="false")
+            button#search-clear.search-clear(type="button" aria-label="清空搜索" title="清空搜索" hidden)
+              span(aria-hidden="true")!= uiIcons.x
+          span#result-count.workbar-count #{stats.totalItems} 个网址
+          span#search-status.sr-only(role="status" aria-live="polite")
 
         button#theme-toggle.icon-button(type="button" aria-label="切换到深色主题" title="切换主题")
           span.theme-icon.theme-icon-moon!= uiIcons.moon
           span.theme-icon.theme-icon-sun!= uiIcons.sun
 
-    #top(aria-hidden="true")
+    span#top(aria-hidden="true")
 
-    main#main-content.page-shell(tabindex="-1")
-      section.page-intro(aria-labelledby="page-title")
-        .intro-copy
-          h1#page-title= site.title
-          p#page-summary #{stats.totalGroups} 个分类 · #{stats.totalItems} 个网址
-
+    main#main-content.workbench(tabindex="-1")
       .content-layout
-        aside.category-sidebar(aria-label="网址分类")
+        aside#category-sidebar.category-sidebar(aria-label="网址分类")
           .category-heading
             span 分类
             span#category-total= stats.totalGroups
@@ -111,6 +109,11 @@ html(lang="zh-CN")
                 +category(group)
 
         #directory.directory(aria-busy="false")
+          .search-empty#search-empty(hidden)
+            span.empty-icon(aria-hidden="true")!= uiIcons.search
+            h2.empty-title 没有匹配的网址
+            p#empty-query.empty-query
+            button#empty-clear.empty-clear(type="button") 清空搜索
           each group in navigation.groups
             +directorySection(group)
 

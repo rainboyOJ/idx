@@ -33,6 +33,20 @@ const LUCIDE_ICON_WHITELIST = [
   "external-link",
 ];
 
+const CATEGORY_ICON_MAP = {
+  网站: "globe",
+  题单: "list-checks",
+  团队: "users",
+  OJ: "square-code",
+  知识: "book-open",
+  Blog: "notebook-pen",
+  工具: "wrench",
+  资料: "archive",
+  AIa: "bot",
+  资源: "package-open",
+  关联: "network",
+};
+
 const errors = [];
 const warnings = [];
 
@@ -208,13 +222,22 @@ async function loadLucideIcons() {
     const height = icon.height || iconsData.height || 24;
     icons[name] = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}" aria-hidden="true" focusable="false" class="lucide lucide-${name}">${icon.body}</svg>`;
   }
-  return icons;
+
+  const categoryIcons = {};
+  for (const [title, name] of Object.entries(CATEGORY_ICON_MAP)) {
+    if (!icons[name]) {
+      errors.push(`分类图标映射引用了白名单外的图标: ${title} -> ${name}`);
+      continue;
+    }
+    categoryIcons[title] = name;
+  }
+  return { icons, categoryIcons };
 }
 
 async function main() {
   const config = await loadConfig();
   const { site, navigation, groups } = await validateConfig(config);
-  const uiIcons = await loadLucideIcons();
+  const { icons: uiIcons, categoryIcons } = await loadLucideIcons();
 
   if (errors.length) {
     throw new Error(`配置校验失败:\n${errors.map((error) => `- ${error}`).join("\n")}`);
@@ -229,6 +252,7 @@ async function main() {
     navigation,
     stats,
     uiIcons,
+    categoryIcons,
     pretty: true,
   });
 
