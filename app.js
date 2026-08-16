@@ -85,20 +85,17 @@ function applyHighlights(el, original, ranges) {
   const fragment = document.createDocumentFragment();
   let cursor = 0;
   for (const [start, end] of ranges) {
-    if (start > cursor) fragment.appendChild(document.createTextNode(original.slice(cursor, start)));
+    if (start > cursor) fragment.appendChild(text(original.slice(cursor, start)));
     const mark = document.createElement("mark");
-    mark.appendChild(document.createTextNode(original.slice(start, end)));
+    mark.appendChild(text(original.slice(start, end)));
     fragment.appendChild(mark);
     cursor = end;
   }
-  if (cursor < original.length) fragment.appendChild(document.createTextNode(original.slice(cursor)));
+  if (cursor < original.length) fragment.appendChild(text(original.slice(cursor)));
   el.replaceChildren(fragment);
 }
 
-function restoreField(element, original) {
-  element.replaceChildren(document.createTextNode(original));
-}
-
+const text = (value) => document.createTextNode(value);
 const items = Array.from(document.querySelectorAll(".link-card")).map((card) => {
   const titleEl = card.querySelector(".link-title");
   const descEl = card.querySelector(".link-description");
@@ -129,9 +126,7 @@ const categoryLinks = Array.from(document.querySelectorAll(".category-link"));
 
 function highlightItem(item, terms) {
   for (const field of item.fields) {
-    const ranges = findRanges(field.map, terms);
-    if (ranges.length) applyHighlights(field.el, field.map.original, ranges);
-    else restoreField(field.el, field.map.original);
+    applyHighlights(field.el, field.map.original, findRanges(field.map, terms));
   }
 }
 
@@ -188,7 +183,7 @@ function observeSections() {
     (entries) => {
       const top = entries
         .filter((entry) => entry.isIntersecting)
-        .sort((left, right) => left.boundingClientRect.top - right.boundingClientRect.top)[0];
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
       if (top) setActiveCategory(top.target.dataset.groupId);
     },
     { rootMargin: `-${stickyHeight()}px 0px -68% 0px`, threshold: 0 },
@@ -226,7 +221,7 @@ function applyFilter() {
     const match = !searching || terms.every((term) => item.index.includes(term));
     item.card.hidden = !match;
     if (!searching) {
-      item.fields.forEach((field) => restoreField(field.el, field.map.original));
+      item.fields.forEach((field) => applyHighlights(field.el, field.map.original, []));
     } else if (match) {
       total += 1;
       const gid = item.section.dataset.groupId;
@@ -308,11 +303,12 @@ elements.searchInput.addEventListener("input", (event) => {
   applyFilter();
 });
 elements.searchInput.addEventListener("keydown", (event) => {
+  const input = elements.searchInput;
   if (event.key === "Escape") {
-    if (normalize(elements.searchInput.value)) {
-      elements.searchInput.value = "";
+    if (normalize(input.value)) {
+      input.value = "";
       applyFilter();
-    } else elements.searchInput.blur();
+    } else input.blur();
   } else if (event.key === "ArrowDown") {
     const first = document.querySelector(".link-card:not([hidden])");
     if (first) {
@@ -338,10 +334,7 @@ document.addEventListener("keydown", (event) => {
     target instanceof HTMLElement &&
     (target.isContentEditable || /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName));
   if (editable) return;
-  if (event.key === "/") {
-    event.preventDefault();
-    focusSearch();
-  } else if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k") {
+  if (event.key === "/" || ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "k")) {
     event.preventDefault();
     focusSearch();
   }
@@ -351,8 +344,7 @@ window.addEventListener(
   "scroll",
   () => {
     elements.backToTop.hidden = window.scrollY < 640;
-    const atBottom =
-      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
+    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
     if (atBottom) {
       const visible = sections.filter((section) => !section.hidden);
       if (visible.length) setActiveCategory(visible[visible.length - 1].dataset.groupId);
