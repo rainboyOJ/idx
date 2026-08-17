@@ -198,7 +198,7 @@ navigation:
     - title: LibreOJ
       url: https://loj.ac/
       description: 中文经典题库
-      icon: assets/icons/784322372351846ab4ff2bf02bb31a21.ico
+      icon: assets/icons/784322372351846ab4ff2bf02bb31a21.svg
     - title: 牛客
       url: https://ac.nowcoder.com/
       description: 比赛与题库
