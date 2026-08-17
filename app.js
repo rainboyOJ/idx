@@ -1,12 +1,15 @@
 "use strict";
-
 const THEME_KEY = "rainboy-nav-theme";
 const DESKTOP = matchMedia("(min-width: 1024px)");
 const MOTION = matchMedia("(prefers-reduced-motion: reduce)");
+const CARD_TILT = matchMedia("(hover: hover) and (pointer: fine)");
+const MAX_TILT = 5;
 
-const state = { observer: null, announcedTotal: -1, hadFirstQuery: false, raf: 0 };
+const state = { observer: null, announced: -1, queried: false, raf: 0 };
+const tilt = { card: null, x: 0, y: 0, raf: 0 };
 
 const $ = (id) => document.getElementById(id);
+const root = document.documentElement;
 const elements = {
   backToTop: $("back-to-top"),
   themeToggle: $("theme-toggle"),
@@ -85,13 +88,13 @@ function applyHighlights(el, original, ranges) {
   const fragment = document.createDocumentFragment();
   let cursor = 0;
   for (const [start, end] of ranges) {
-    if (start > cursor) fragment.appendChild(text(original.slice(cursor, start)));
+    if (start > cursor) fragment.append(text(original.slice(cursor, start)));
     const mark = document.createElement("mark");
-    mark.appendChild(text(original.slice(start, end)));
-    fragment.appendChild(mark);
+    mark.append(text(original.slice(start, end)));
+    fragment.append(mark);
     cursor = end;
   }
-  if (cursor < original.length) fragment.appendChild(text(original.slice(cursor)));
+  if (cursor < original.length) fragment.append(text(original.slice(cursor)));
   el.replaceChildren(fragment);
 }
 
@@ -110,9 +113,7 @@ const items = Array.from(document.querySelectorAll(".link-card")).map((card) => 
   return {
     card,
     section,
-    index: [titleMap.norm, descMap.norm, hostMap.norm, normalize(category)]
-      .filter(Boolean)
-      .join(" "),
+    index: [titleMap.norm, descMap.norm, hostMap.norm, normalize(category)].join(" "),
     fields: [
       { el: titleEl, map: titleMap },
       { el: descEl, map: descMap },
@@ -122,7 +123,7 @@ const items = Array.from(document.querySelectorAll(".link-card")).map((card) => 
 });
 
 const sections = Array.from(document.querySelectorAll(".directory-section"));
-const categoryLinks = Array.from(document.querySelectorAll(".category-link"));
+const navLinks = Array.from(document.querySelectorAll(".category-link"));
 
 function highlightItem(item, terms) {
   for (const field of item.fields) {
@@ -136,8 +137,10 @@ function stickyHeight() {
   return Math.round(workbarHeight + elements.categorySidebar.getBoundingClientRect().height);
 }
 
+const atPageBottom = () => window.innerHeight + window.scrollY >= root.scrollHeight - 4;
+
 function setActiveCategory(groupId) {
-  for (const link of categoryLinks) {
+  for (const link of navLinks) {
     if (link.dataset.groupId === String(groupId)) link.setAttribute("aria-current", "true");
     else link.removeAttribute("aria-current");
   }
@@ -150,11 +153,11 @@ function scrollActiveIntoView() {
   if (!active) return;
   const list = elements.categoryList;
   const listRect = list.getBoundingClientRect();
-  const target =
-    active.getBoundingClientRect().left - listRect.left - (list.clientWidth - active.offsetWidth) / 2;
+  const target = list.scrollLeft + active.getBoundingClientRect().left - listRect.left -
+    (list.clientWidth - active.offsetWidth) / 2;
   const max = list.scrollWidth - list.clientWidth;
   list.scrollTo({
-    left: target < 0 ? 0 : target > max ? max : target,
+    left: Math.min(max, Math.max(0, target)),
     behavior: reducedMotion() ? "auto" : "smooth",
   });
 }
@@ -176,11 +179,15 @@ function observeSections() {
   state.observer?.disconnect();
   const visible = sections.filter((section) => !section.hidden);
   if (!visible.length) {
-    categoryLinks.forEach((link) => link.removeAttribute("aria-current"));
+    navLinks.forEach((link) => link.removeAttribute("aria-current"));
     return;
   }
   state.observer = new IntersectionObserver(
     (entries) => {
+      if (atPageBottom()) {
+        setActiveCategory(visible[visible.length - 1].dataset.groupId);
+        return;
+      }
       const top = entries
         .filter((entry) => entry.isIntersecting)
         .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
@@ -204,17 +211,18 @@ function applyFilter() {
   const raw = elements.searchInput.value;
   const terms = normalize(raw).split(/\s+/).filter(Boolean);
   const searching = terms.length > 0;
+  const endedSearch = !searching && state.queried;
   const totalItems = items.length;
 
-  if (searching && !state.first) {
-    state.first = true;
+  if (searching && !state.queried) {
+    state.queried = true;
     const top = elements.directory.getBoundingClientRect().top + window.scrollY - stickyHeight();
     window.scrollTo({ top: Math.max(0, top), behavior: reducedMotion() ? "auto" : "smooth" });
   } else if (!searching) {
-    state.first = false;
+    state.queried = false;
   }
 
-  const groupCounts = new Map();
+  const counts = new Map();
   let total = 0;
 
   for (const item of items) {
@@ -225,26 +233,26 @@ function applyFilter() {
     } else if (match) {
       total += 1;
       const gid = item.section.dataset.groupId;
-      groupCounts.set(gid, (groupCounts.get(gid) || 0) + 1);
+      counts.set(gid, (counts.get(gid) || 0) + 1);
       highlightItem(item, terms);
     }
   }
 
   for (const section of sections) {
-    const count = groupCounts.get(section.dataset.groupId) || 0;
+    const count = counts.get(section.dataset.groupId) || 0;
     section.hidden = searching && count === 0;
     const sectionCount = section.querySelector(".section-count");
     sectionCount.textContent = searching ? String(count) : sectionCount.dataset.total;
   }
 
-  for (const link of categoryLinks) {
-    const count = groupCounts.get(link.dataset.groupId) || 0;
+  for (const link of navLinks) {
+    const count = counts.get(link.dataset.groupId) || 0;
     link.hidden = searching && count === 0;
     const countEl = link.querySelector(".category-count");
     countEl.textContent = searching ? String(count) : countEl.dataset.total;
   }
 
-  elements.resultCount.textContent = searching ? `${total} / ${totalItems}` : `${totalItems} 个网址`;
+  elements.resultCount.textContent = searching ? `${total} / ${totalItems}` : `${totalItems} LINKS`;
   elements.searchClear.hidden = !searching;
   elements.categorySidebar.hidden = searching && total === 0;
   elements.emptyState.hidden = !(searching && total === 0);
@@ -252,6 +260,7 @@ function applyFilter() {
 
   if (!searching) {
     state.announced = -1;
+    elements.searchStatus.textContent = endedSearch ? `显示全部 ${totalItems} 个网址` : "";
   } else if (total !== state.announced) {
     state.announced = total;
     elements.searchStatus.textContent = `找到 ${total} 个网址，共 ${totalItems} 个`;
@@ -278,23 +287,61 @@ function setupImageFallbacks() {
 }
 
 function updateThemeButton() {
-  const isDark = document.documentElement.dataset.theme === "dark";
+  const isDark = root.dataset.theme === "dark";
   elements.themeToggle.setAttribute("aria-label", isDark ? "切换到浅色主题" : "切换到深色主题");
 }
 
 function toggleTheme() {
-  const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-  document.documentElement.dataset.theme = nextTheme;
+  const nextTheme = root.dataset.theme === "dark" ? "light" : "dark";
+  root.dataset.theme = nextTheme;
   try {
     localStorage.setItem(THEME_KEY, nextTheme);
-  } catch {
-    }
+  } catch {}
   updateThemeButton();
 }
 
 function focusSearch() {
   elements.searchInput.focus();
   elements.searchInput.select();
+}
+
+function resetCardTilt(card = tilt.card) {
+  cancelAnimationFrame(tilt.raf);
+  tilt.raf = 0;
+  card?.style.removeProperty("--tilt-x");
+  card?.style.removeProperty("--tilt-y");
+  card?.style.removeProperty("--glass-x");
+  card?.style.removeProperty("--glass-y");
+  if (card === tilt.card) tilt.card = null;
+}
+
+function updateCardTilt() {
+  tilt.raf = 0;
+  if (!tilt.card || !CARD_TILT.matches || reducedMotion()) return;
+  const rect = tilt.card.getBoundingClientRect();
+  const clamp = (value) => Math.max(-1, Math.min(1, value));
+  const pointerX = clamp(((tilt.x - rect.left) / rect.width) * 2 - 1);
+  const pointerY = clamp(((tilt.y - rect.top) / rect.height) * 2 - 1);
+  tilt.card.style.setProperty("--tilt-x", `${(-pointerY * MAX_TILT).toFixed(2)}deg`);
+  tilt.card.style.setProperty("--tilt-y", `${(pointerX * MAX_TILT).toFixed(2)}deg`);
+  tilt.card.style.setProperty("--glass-x", `${((pointerX + 1) * 50).toFixed(1)}%`);
+  tilt.card.style.setProperty("--glass-y", `${((pointerY + 1) * 50).toFixed(1)}%`);
+}
+
+function handleCardPointerMove(event) {
+  if (!CARD_TILT.matches || reducedMotion()) return;
+  const card = event.target.closest(".link-card");
+  if (!card) return;
+  if (tilt.card && tilt.card !== card) resetCardTilt();
+  tilt.card = card;
+  tilt.x = event.clientX;
+  tilt.y = event.clientY;
+  if (!tilt.raf) tilt.raf = requestAnimationFrame(updateCardTilt);
+}
+
+function handleCardPointerOut(event) {
+  const card = event.target.closest(".link-card");
+  if (card && !card.contains(event.relatedTarget)) resetCardTilt(card);
 }
 
 elements.themeToggle.addEventListener("click", toggleTheme);
@@ -324,6 +371,8 @@ elements.categoryList.addEventListener("click", (event) => {
   if (link) setActiveCategory(link.dataset.groupId);
 });
 elements.categoryList.addEventListener("scroll", updateRailOverflow, { passive: true });
+elements.directory.addEventListener("pointermove", handleCardPointerMove, { passive: true });
+elements.directory.addEventListener("pointerout", handleCardPointerOut);
 elements.backToTop.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: reducedMotion() ? "auto" : "smooth" });
 });
@@ -344,8 +393,7 @@ window.addEventListener(
   "scroll",
   () => {
     elements.backToTop.hidden = window.scrollY < 640;
-    const atBottom = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 4;
-    if (atBottom) {
+    if (atPageBottom()) {
       const visible = sections.filter((section) => !section.hidden);
       if (visible.length) setActiveCategory(visible[visible.length - 1].dataset.groupId);
     }
@@ -357,6 +405,8 @@ window.addEventListener("resize", () => {
   observeSections();
   updateRailOverflow();
 });
+CARD_TILT.addEventListener("change", () => resetCardTilt());
+MOTION.addEventListener("change", () => resetCardTilt());
 
 setupImageFallbacks();
 observeSections();

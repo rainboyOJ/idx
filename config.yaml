@@ -4,7 +4,7 @@ site:
   description: 学习、竞赛与常用工具
   metaDescription: Rainboy 常用网址导航
 navigation:
-  updatedAt: '2026-08-16'
+  updatedAt: '2026-08-17'
   groups:
   - id: '1'
     title: 网站
@@ -40,10 +40,10 @@ navigation:
     - title: 我录制的教程
       url: http://video.roj.ac.cn
       icon: assets/icons/noto-v1_video-camera.svg
-    - title: 资料网盘
-      url: https://ol.roj.ac.cn/
-      description: OpenList
-      icon: assets/icons/59247e454f8a16d7729c4fda0e58db92.svg
+    # - title: 资料网盘
+    #   url: https://ol.roj.ac.cn/
+    #   description: OpenList
+    #   icon: assets/icons/59247e454f8a16d7729c4fda0e58db92.svg
     - title: 资料网盘
       url: https://d.roj.ac.cn
       description: Alist
@@ -190,6 +190,9 @@ navigation:
     - title: usaco
       url: https://usaco.org/
       icon: assets/icons/5f89635ff71452d6b00252ac7a59fc42.ico
+    - title: 南京大学编译原理OJ
+      url: https://oj.compilers.cpl.icu/
+      description: "https://blog.roj.ac.cn/compiler-principles/"
   - id: '8'
     title: 知识
     icon: assets/icons/material-symbols_folder-outline.svg
@@ -422,7 +425,7 @@ navigation:
       description: 包括初赛pdf,复赛数据
       icon: assets/icons/logos_github-octocat.svg
   - id: '10'
-    title: AIa
+    title: AI
     icon: assets/icons/material-symbols_folder-outline.svg
     items:
     - title: 官方DeepSeek

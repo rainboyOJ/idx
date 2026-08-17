@@ -1,21 +1,19 @@
 - const initialFor = (value) => Array.from(String(value || "?"))[0]?.toLocaleUpperCase("zh-CN") || "?"
 - const normalize = (value) => String(value || "").normalize("NFKC").toLocaleLowerCase("zh-CN").trim()
 - const getHostname = (value) => { try { return new URL(value).hostname.replace(/^www\./, "") } catch { return value } }
+- const formatIndex = (index) => String(index + 1).padStart(2, "0")
 
-mixin categoryIcon(group)
-  span.category-icon(aria-hidden="true")!= uiIcons[categoryIcons[group.title] || "globe"]
-
-mixin category(group)
+mixin category(group, groupIndex)
   li
     a.category-link(href=`#group-${group.id}` data-group-id=String(group.id))
-      +categoryIcon(group)
+      span.category-index(aria-hidden="true")= formatIndex(groupIndex)
       span.category-title= group.title
       span.category-count(data-total=group.items.length)= group.items.length
 
 mixin linkIcon(item)
   span.link-icon-frame
     if item.icon
-      img.link-icon(src=item.icon alt="" width="40" height="40" loading="lazy" decoding="async")
+      img.link-icon(src=item.icon alt="" width="28" height="28" loading="lazy" decoding="async")
       span.link-icon-fallback(hidden style=item.iconBackground ? `background-color: ${item.iconBackground}; color: #ffffff` : undefined)= item.iconText || initialFor(item.title)
     else
       span.link-icon-fallback(style=item.iconBackground ? `background-color: ${item.iconBackground}; color: #ffffff` : undefined)= item.iconText || initialFor(item.title)
@@ -32,13 +30,17 @@ mixin linkCard(item, group)
       span.sr-only （在新标签页打开）
     span.link-external(aria-hidden="true")!= uiIcons["external-link"]
 
-mixin directorySection(group)
+mixin directorySection(group, groupIndex)
   section.directory-section(id=`group-${group.id}` data-group-id=String(group.id))
     .section-heading-row
-      h2.section-heading
-        span.section-icon(aria-hidden="true")!= uiIcons[categoryIcons[group.title] || "globe"]
-        span.section-title= group.title
-      span.section-count(data-total=group.items.length)= group.items.length
+      .section-heading-line
+        h2.section-heading
+          span.section-index(aria-hidden="true")= formatIndex(groupIndex)
+          span.section-separator(aria-hidden="true") /
+          span.section-title= group.title
+        span.section-meta
+          span.section-count(data-total=group.items.length)= group.items.length
+          span.section-unit LINKS
       span.section-rule(aria-hidden="true")
     .link-grid
       each item in group.items
@@ -57,15 +59,16 @@ html(lang="zh-CN")
     link(rel="stylesheet" href="styles.css")
     script.
       (() => {
+        const systemTheme = matchMedia("(prefers-color-scheme: dark)").matches
+          ? "dark"
+          : "light";
+        let savedTheme = null;
         try {
-          const savedTheme = localStorage.getItem("rainboy-nav-theme");
-          const systemTheme = matchMedia("(prefers-color-scheme: dark)").matches
-            ? "dark"
-            : "light";
-          document.documentElement.dataset.theme = savedTheme || systemTheme;
-        } catch {
-          document.documentElement.dataset.theme = "light";
-        }
+          savedTheme = localStorage.getItem("rainboy-nav-theme");
+        } catch {}
+        document.documentElement.dataset.theme = ["light", "dark"].includes(savedTheme)
+          ? savedTheme
+          : systemTheme;
       })();
     script(src="app.js" defer)
   body
@@ -82,11 +85,12 @@ html(lang="zh-CN")
           .search-field(role="search")
             span.search-icon(aria-hidden="true")!= uiIcons.search
             label.sr-only(for="site-search") 搜索网址
-            input#site-search(type="search" placeholder="搜索网址" autocomplete="off" spellcheck="false")
+            input#site-search(type="search" placeholder="搜索网址、描述或域名" autocomplete="off" spellcheck="false")
             button#search-clear.search-clear(type="button" aria-label="清空搜索" title="清空搜索" hidden)
               span(aria-hidden="true")!= uiIcons.x
-          span#result-count.workbar-count #{stats.totalItems} 个网址
-          span#search-status.sr-only(role="status" aria-live="polite")
+
+        span#result-count.workbar-count #{stats.totalItems} LINKS
+        span#search-status.sr-only(role="status" aria-live="polite")
 
         button#theme-toggle.icon-button(type="button" aria-label="切换到深色主题" title="切换主题")
           span.theme-icon.theme-icon-moon!= uiIcons.moon
@@ -98,21 +102,23 @@ html(lang="zh-CN")
       .content-layout
         aside#category-sidebar.category-sidebar(aria-label="网址分类")
           .category-heading
-            span 分类
+            span INDEX /
             span#category-total= stats.totalGroups
           nav(aria-label="按分类跳转")
             ul#category-list.category-list
-              each group in navigation.groups
-                +category(group)
+              each group, groupIndex in navigation.groups
+                +category(group, groupIndex)
 
         #directory.directory(aria-busy="false")
           .search-empty#search-empty(hidden)
             span.empty-icon(aria-hidden="true")!= uiIcons.search
             h2.empty-title 没有匹配的网址
             p#empty-query.empty-query
-            button#empty-clear.empty-clear(type="button") 清空搜索
-          each group in navigation.groups
-            +directorySection(group)
+            button#empty-clear.empty-clear(type="button")
+              span.empty-clear-icon(aria-hidden="true")!= uiIcons.x
+              span 清空搜索
+          each group, groupIndex in navigation.groups
+            +directorySection(group, groupIndex)
 
     footer.site-footer
       p#footer-summary #{site.title} · 数据更新于 #{navigation.updatedAt}

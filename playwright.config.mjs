@@ -5,10 +5,10 @@ import { defineConfig } from "@playwright/test";
 const projectRoot = dirname(fileURLToPath(import.meta.url));
 
 export const PAGE_URL = pathToFileURL(join(projectRoot, "index.html")).href;
-export const BASELINE_DIR = join(projectRoot, "tests", "baseline");
 
 export default defineConfig({
   testDir: "./tests",
+  snapshotPathTemplate: "{testDir}/baseline/{arg}{ext}",
   timeout: 30000,
   expect: { timeout: 5000 },
   fullyParallel: true,

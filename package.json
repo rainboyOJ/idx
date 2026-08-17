@@ -8,6 +8,7 @@
     "build": "bun run scripts/build.mjs",
     "test": "playwright test",
     "test:visual": "playwright test tests/navigation.visual.spec.mjs",
+    "test:visual:update": "playwright test tests/navigation.visual.spec.mjs --update-snapshots=all",
     "test:axe": "playwright test tests/navigation.axe.spec.mjs",
     "audit:lighthouse": "bun run scripts/audit-lighthouse.mjs"
   },

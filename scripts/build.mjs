@@ -14,17 +14,6 @@ const outputPath = resolve(projectRoot, "index.html");
 const lucideIconsPath = resolve(projectRoot, "node_modules/@iconify-json/lucide/icons.json");
 
 const LUCIDE_ICON_WHITELIST = [
-  "globe",
-  "list-checks",
-  "users",
-  "square-code",
-  "book-open",
-  "notebook-pen",
-  "wrench",
-  "archive",
-  "bot",
-  "package-open",
-  "network",
   "search",
   "x",
   "sun",
@@ -32,20 +21,6 @@ const LUCIDE_ICON_WHITELIST = [
   "arrow-up",
   "external-link",
 ];
-
-const CATEGORY_ICON_MAP = {
-  网站: "globe",
-  题单: "list-checks",
-  团队: "users",
-  OJ: "square-code",
-  知识: "book-open",
-  Blog: "notebook-pen",
-  工具: "wrench",
-  资料: "archive",
-  AIa: "bot",
-  资源: "package-open",
-  关联: "network",
-};
 
 const errors = [];
 const warnings = [];
@@ -208,7 +183,7 @@ async function loadLucideIcons() {
     iconsData = JSON.parse(await readFile(lucideIconsPath, "utf8"));
   } catch (error) {
     errors.push(`无法读取 Lucide 图标数据: ${error.message}`);
-    return { icons: {}, refs: {}, sprite: "" };
+    return { icons: {}, sprite: "" };
   }
 
   const icons = {};
@@ -226,21 +201,13 @@ async function loadLucideIcons() {
   }
   const sprite = `<svg class="lucide-sprite" aria-hidden="true" focusable="false" hidden>${symbols.join("")}</svg>`;
 
-  const categoryIcons = {};
-  for (const [title, name] of Object.entries(CATEGORY_ICON_MAP)) {
-    if (!icons[name]) {
-      errors.push(`分类图标映射引用了白名单外的图标: ${title} -> ${name}`);
-      continue;
-    }
-    categoryIcons[title] = name;
-  }
-  return { icons, categoryIcons, sprite };
+  return { icons, sprite };
 }
 
 async function main() {
   const config = await loadConfig();
   const { site, navigation, groups } = await validateConfig(config);
-  const { icons: uiIcons, categoryIcons, sprite: uiIconSprite } = await loadLucideIcons();
+  const { icons: uiIcons, sprite: uiIconSprite } = await loadLucideIcons();
 
   if (errors.length) {
     throw new Error(`配置校验失败:\n${errors.map((error) => `- ${error}`).join("\n")}`);
@@ -255,7 +222,6 @@ async function main() {
     navigation,
     stats,
     uiIcons,
-    categoryIcons,
     uiIconSprite,
     pretty: true,
   });
