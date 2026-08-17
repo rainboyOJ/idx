@@ -3,7 +3,8 @@ const THEME_KEY = "rainboy-nav-theme";
 const DESKTOP = matchMedia("(min-width: 1024px)");
 const MOTION = matchMedia("(prefers-reduced-motion: reduce)");
 const CARD_TILT = matchMedia("(hover: hover) and (pointer: fine)");
-const MAX_TILT = 5;
+const MAX_TILT_X = 9;
+const MAX_TILT_Y = 5;
 
 const state = { observer: null, announced: -1, queried: false, raf: 0 };
 const tilt = { card: null, x: 0, y: 0, raf: 0 };
@@ -322,8 +323,8 @@ function updateCardTilt() {
   const clamp = (value) => Math.max(-1, Math.min(1, value));
   const pointerX = clamp(((tilt.x - rect.left) / rect.width) * 2 - 1);
   const pointerY = clamp(((tilt.y - rect.top) / rect.height) * 2 - 1);
-  tilt.card.style.setProperty("--tilt-x", `${(-pointerY * MAX_TILT).toFixed(2)}deg`);
-  tilt.card.style.setProperty("--tilt-y", `${(pointerX * MAX_TILT).toFixed(2)}deg`);
+  tilt.card.style.setProperty("--tilt-x", `${(-pointerY * MAX_TILT_X).toFixed(2)}deg`);
+  tilt.card.style.setProperty("--tilt-y", `${(pointerX * MAX_TILT_Y).toFixed(2)}deg`);
   tilt.card.style.setProperty("--glass-x", `${((pointerX + 1) * 50).toFixed(1)}%`);
   tilt.card.style.setProperty("--glass-y", `${((pointerY + 1) * 50).toFixed(1)}%`);
 }

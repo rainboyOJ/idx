@@ -98,14 +98,14 @@ test("dark cards remain distinct and tilt toward the pointer", async ({ page }, 
   }));
 
   await page.mouse.move(box.x + 1, box.y + 1);
-  await expect.poll(async () => (await readTilt()).x).toBeGreaterThan(4.5);
+  await expect.poll(async () => (await readTilt()).x).toBeGreaterThan(8);
   await expect.poll(() => card.evaluate(
     (node) => getComputedStyle(node).backdropFilter,
   )).not.toBe("none");
   const topLeft = await readTilt();
-  expect(topLeft.x).toBeGreaterThan(4.5);
+  expect(topLeft.x).toBeGreaterThan(8);
   expect(topLeft.y).toBeLessThan(-4.5);
-  expect(Math.abs(topLeft.x)).toBeLessThanOrEqual(5);
+  expect(Math.abs(topLeft.x)).toBeLessThanOrEqual(9);
   expect(Math.abs(topLeft.y)).toBeLessThanOrEqual(5);
   expect(topLeft.glassX).toBeLessThan(5);
   expect(topLeft.glassY).toBeLessThan(5);
@@ -135,11 +135,11 @@ test("dark cards remain distinct and tilt toward the pointer", async ({ page }, 
   await page.waitForTimeout(220);
   const centeredBox = await card.boundingBox();
   await page.mouse.move(centeredBox.x + centeredBox.width - 8, centeredBox.y + centeredBox.height - 8);
-  await expect.poll(async () => (await readTilt()).x).toBeLessThan(-3.5);
+  await expect.poll(async () => (await readTilt()).x).toBeLessThan(-6.5);
   const bottomRight = await readTilt();
-  expect(bottomRight.x).toBeLessThan(-3.5);
+  expect(bottomRight.x).toBeLessThan(-6.5);
   expect(bottomRight.y).toBeGreaterThan(4.5);
-  expect(Math.abs(bottomRight.x)).toBeLessThanOrEqual(5);
+  expect(Math.abs(bottomRight.x)).toBeLessThanOrEqual(9);
   expect(Math.abs(bottomRight.y)).toBeLessThanOrEqual(5);
   expect(bottomRight.glassX).toBeGreaterThan(90);
   expect(bottomRight.glassY).toBeGreaterThan(80);
