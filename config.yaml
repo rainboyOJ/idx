@@ -190,6 +190,9 @@ navigation:
     - title: usaco
       url: https://usaco.org/
       icon: assets/icons/5f89635ff71452d6b00252ac7a59fc42.ico
+    - title: CSES
+      url: https://cses.fi/
+      description: Code Submission Evaluation System
     - title: 南京大学编译原理OJ
       url: https://oj.compilers.cpl.icu/
       description: "https://blog.roj.ac.cn/compiler-principles/"
@@ -219,6 +222,10 @@ navigation:
     - title: cp-algo
       url: https://cp-algorithms.com/
       icon: assets/icons/d29ba76039f1f5037cc4772aa8a3f33c.ico
+    - title: CP Handbook
+      url: https://github.com/pllk/cphb
+      description: Competitive Programmer's Handbook 书稿与题解
+      icon: assets/icons/skill-icons_github-light.svg
     - title: 厦门大学 离散数学
       url: https://space.bilibili.com/484021447/channel/seriesdetail?sid=372883
       icon: assets/icons/5af1e8c4152f6ce273d5c436a597d95b.ico
