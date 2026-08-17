@@ -193,6 +193,27 @@ navigation:
     - title: CSES
       url: https://cses.fi/
       description: Code Submission Evaluation System
+    - title: LibreOJ
+      url: https://loj.ac/
+      description: 中文经典题库
+    - title: 牛客
+      url: https://ac.nowcoder.com/
+      description: 比赛与题库
+    - title: Kattis
+      url: https://open.kattis.com/
+      description: ICPC 风格
+    - title: QOJ
+      url: https://qoj.ac/
+      description: 收录 ICPC 区域赛与总决赛题
+    - title: HydroOJ
+      url: https://hydro.ac/
+      description: 洛谷继任平台
+    - title: CodeChef
+      url: https://www.codechef.com/
+      description: Long Challenge 长期训练
+    - title: Project Euler
+      url: https://projecteuler.net/
+      description: 数学向刷题
     - title: 南京大学编译原理OJ
       url: https://oj.compilers.cpl.icu/
       description: "https://blog.roj.ac.cn/compiler-principles/"
