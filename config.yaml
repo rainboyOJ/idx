@@ -193,27 +193,37 @@ navigation:
     - title: CSES
       url: https://cses.fi/
       description: Code Submission Evaluation System
+      iconText: CSES
+      iconBackground: "#4C6EF5"
     - title: LibreOJ
       url: https://loj.ac/
       description: 中文经典题库
+      icon: assets/icons/784322372351846ab4ff2bf02bb31a21.ico
     - title: 牛客
       url: https://ac.nowcoder.com/
       description: 比赛与题库
+      icon: assets/icons/1064426b36c56c8702d90cab1fe0cd06.ico
     - title: Kattis
       url: https://open.kattis.com/
       description: ICPC 风格
+      icon: assets/icons/65fb88ab8c819d2a097b9784eef25ac9.png
     - title: QOJ
       url: https://qoj.ac/
       description: 收录 ICPC 区域赛与总决赛题
+      iconText: QOJ
+      iconBackground: "#C0392B"
     - title: HydroOJ
       url: https://hydro.ac/
       description: 洛谷继任平台
+      icon: assets/icons/e7aadea2c10a5294a577a0791bcb3526.ico
     - title: CodeChef
       url: https://www.codechef.com/
       description: Long Challenge 长期训练
+      icon: assets/icons/cf46a48c2643f9985066cf14a0a5a103.ico
     - title: Project Euler
       url: https://projecteuler.net/
       description: 数学向刷题
+      icon: assets/icons/b865edc7fa1f447a3bb3885fa3d7ce89.png
     - title: 南京大学编译原理OJ
       url: https://oj.compilers.cpl.icu/
       description: "https://blog.roj.ac.cn/compiler-principles/"
@@ -246,7 +256,7 @@ navigation:
     - title: CP Handbook
       url: https://github.com/pllk/cphb
       description: Competitive Programmer's Handbook 书稿与题解
-      icon: assets/icons/skill-icons_github-light.svg
+      icon: assets/icons/55728aae54739acb5c2e32ed78ce5acd.svg
     - title: 厦门大学 离散数学
       url: https://space.bilibili.com/484021447/channel/seriesdetail?sid=372883
       icon: assets/icons/5af1e8c4152f6ce273d5c436a597d95b.ico
