@@ -224,6 +224,10 @@ navigation:
       url: https://projecteuler.net/
       description: 数学向刷题
       icon: assets/icons/b865edc7fa1f447a3bb3885fa3d7ce89.png
+    - title: 梦熊OJ
+      url: https://www.mxoj.net/
+      description: 梦熊信息学
+      icon: assets/icons/e18a6e9e8d21da2b33927dc52040c68e.png
     - title: 南京大学编译原理OJ
       url: https://oj.compilers.cpl.icu/
       description: "https://blog.roj.ac.cn/compiler-principles/"
