@@ -466,6 +466,10 @@ navigation:
       url: https://github.com/winterant/oi
       description: 包括初赛pdf,复赛数据
       icon: assets/icons/logos_github-octocat.svg
+    - title: CSP学习资料库
+      url: https://github.com/mingyush/csp
+      description: CSP 学习资料
+      icon: assets/icons/logos_github-octocat.svg
   - id: '10'
     title: AI
     icon: assets/icons/material-symbols_folder-outline.svg
