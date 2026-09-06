@@ -228,6 +228,10 @@ navigation:
       url: https://www.mxoj.net/
       description: 梦熊信息学
       icon: assets/icons/e18a6e9e8d21da2b33927dc52040c68e.png
+    - title: BJFU ACM OJ
+      url: https://www.bjfuacm.com/
+      description: 北京林业大学 ACM 协会
+      icon: assets/icons/826db4a06083d44c716efa857d126285.ico
     - title: 南京大学编译原理OJ
       url: https://oj.compilers.cpl.icu/
       description: "https://blog.roj.ac.cn/compiler-principles/"
