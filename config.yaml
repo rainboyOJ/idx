@@ -8,6 +8,7 @@ navigation:
   groups:
   - id: '1'
     title: 网站
+    description: 我自建的站点与常用入口
     icon: assets/icons/material-symbols_ad-group-outline.svg
     items:
     - title: ROJ
@@ -115,6 +116,7 @@ navigation:
       icon: assets/icons/skill-icons_github-dark.svg
   - id: '6'
     title: 题单
+    description: 按专题整理的刷题清单
     icon: assets/icons/material-symbols_folder-outline.svg
     items:
     - title: 牛客csp-j
@@ -165,6 +167,7 @@ navigation:
       icon: assets/icons/5296b12fe11d4b9804859661c223bd04.ico
   - id: '3'
     title: 团队
+    description: 我参与维护的训练团队
     icon: assets/icons/material-symbols_folder-outline.svg
     items:
     - title: luogu-Team
@@ -179,6 +182,7 @@ navigation:
       icon: assets/icons/ef39c14288422603f8dfad625742367b.jpg
   - id: '7'
     title: OJ
+    description: 刷题与比赛的在线评测平台
     icon: assets/icons/material-symbols_folder-outline.svg
     items:
     - title: AtCoder
@@ -246,6 +250,7 @@ navigation:
       description: "https://blog.roj.ac.cn/compiler-principles/"
   - id: '8'
     title: 知识
+    description: 课程、教程与参考资料
     icon: assets/icons/material-symbols_folder-outline.svg
     items:
     - title: csdiy
@@ -323,6 +328,7 @@ navigation:
       icon: assets/icons/ea7ff8cdd8131e8e2d534bcc8e89a5fa.png
   - id: '9'
     title: Blog
+    description: 常看的竞赛博客
     icon: assets/icons/material-symbols_folder-outline.svg
     items:
     - title: alex-wei
@@ -336,6 +342,7 @@ navigation:
       icon: assets/icons/070fbdf39b2b58409dbf83f073d93017.ico
   - id: '4'
     title: 工具
+    description: 日常用的在线小工具
     icon: assets/icons/material-symbols_folder-outline.svg
     items:
     - title: 画板
@@ -474,6 +481,7 @@ navigation:
       icon: assets/icons/408f47e0f9ede0a9bed9d7c061f21871.png
   - id: '11'
     title: 资料
+    description: CSP 真题与学习资料
     items:
     - title: 历年真题
       url: https://github.com/winterant/oi
@@ -485,6 +493,7 @@ navigation:
       icon: assets/icons/logos_github-octocat.svg
   - id: '10'
     title: AI
+    description: 常用的 AI 对话入口
     icon: assets/icons/material-symbols_folder-outline.svg
     items:
     - title: 官方DeepSeek
@@ -501,6 +510,7 @@ navigation:
       icon: assets/icons/af1de7d7e1b421b7d8190bb53bb0066e.png
   - id: '12'
     title: 资源
+    description: 字体等实用资源
     items:
     - title: maple-font
       url: https://github.com/subframe7536/maple-font
@@ -508,6 +518,7 @@ navigation:
       icon: assets/icons/da8adb6cc6345c942472875b3ea1aeab.png
   - id: '5'
     title: 关联
+    description: 相关的 OI 官方与社区站点
     icon: assets/icons/material-symbols_folder-outline.svg
     items:
     - title: NOI官网
