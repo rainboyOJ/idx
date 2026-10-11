@@ -4,7 +4,7 @@ site:
   description: 学习、竞赛与常用工具
   metaDescription: Rainboy 常用网址导航
 navigation:
-  updatedAt: '2026-08-17'
+  updatedAt: '2026-10-11'
   groups:
   - id: '1'
     title: 网站
@@ -103,6 +103,14 @@ navigation:
       icon: assets/icons/c3e150f958028cbe575a96f9e901ad47.png
     - title: OI文章收集
       url: https://gist.github.com/Rainboylvx/4223067a0ab2561280fa7996d7c9ac06
+      icon: assets/icons/skill-icons_github-dark.svg
+  - id: '13'
+    title: 仓库
+    icon: assets/icons/logos_github-octocat.svg
+    items:
+    - title: roj-local-judge-lite
+      url: https://github.com/rainboyOJ/roj-local-judge-lite
+      description: Linux 下的简单代码评测机
       icon: assets/icons/skill-icons_github-dark.svg
   - id: '6'
     title: 题单
