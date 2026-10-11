@@ -132,6 +132,7 @@ async function validateConfig(config) {
     groupIds.add(id);
 
     requireText(group.title, `${groupPath}.title`);
+    optionalText(group.description, `${groupPath}.description`);
     await validateLocalAsset(group.icon, `${groupPath}.icon`);
 
     const items = requireList(group.items, `${groupPath}.items`);

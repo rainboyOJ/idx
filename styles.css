@@ -613,6 +613,13 @@ mark {
   white-space: nowrap;
 }
 
+.section-description {
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 13px;
+  line-height: 18px;
+}
+
 .section-rule {
   width: 100%;
   height: var(--border-width);

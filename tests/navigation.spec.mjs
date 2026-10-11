@@ -1,20 +1,49 @@
+import { readFileSync } from "node:fs";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 import { test, expect } from "@playwright/test";
+import { parse } from "yaml";
 import { PAGE_URL } from "../playwright.config.mjs";
 
-const TOTAL = 119;
+// 结构性数字全部从 config.yaml 推导，内容增减不再需要同步测试。
+const projectRoot = dirname(dirname(fileURLToPath(import.meta.url)));
+const groups = parse(readFileSync(join(projectRoot, "config.yaml"), "utf8")).navigation.groups;
+const GROUPS = groups.length;
+const TOTAL = groups.reduce((total, group) => total + group.items.length, 0);
+const INDEXES = Array.from({ length: GROUPS }, (_, index) => String(index + 1).padStart(2, "0"));
+
+// 与 app.js 的搜索语义一致：NFKC 归一化后，标题/描述/域名/分类名拼接，所有关键词都要命中。
+const norm = (value) => String(value || "").normalize("NFKC").trim().toLocaleLowerCase("zh-CN");
+const hostname = (url) => {
+  try {
+    return new URL(url).hostname.replace(/^www\./, "");
+  } catch {
+    return url;
+  }
+};
+const searchIndexes = groups.flatMap((group) =>
+  group.items.map((item) => {
+    const host = hostname(item.url);
+    return [item.title, item.description || host, host, group.title].map(norm).join(" ");
+  }),
+);
+const expectedMatches = (query) => {
+  const terms = norm(query).split(/\s+/).filter(Boolean);
+  return searchIndexes.filter((index) => terms.every((term) => index.includes(term))).length;
+};
 
 test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => localStorage.removeItem("rainboy-nav-theme"));
   await page.goto(PAGE_URL);
 });
 
-test(`baseline structure keeps 11 categories and ${TOTAL} items`, async ({ page }) => {
-  await expect(page.locator(".directory-section")).toHaveCount(11);
+test(`baseline structure keeps ${GROUPS} categories and ${TOTAL} items`, async ({ page }) => {
+  await expect(page.locator(".directory-section")).toHaveCount(GROUPS);
   await expect(page.locator(".link-card")).toHaveCount(TOTAL);
   await expect(page.locator("h1")).toHaveCount(1);
-  await expect(page.locator(".directory-section h2")).toHaveCount(11);
+  await expect(page.locator(".directory-section h2")).toHaveCount(GROUPS);
   await expect(page.locator("#result-count")).toHaveText(`${TOTAL} LINKS`);
-  await expect(page.locator(".category-link")).toHaveCount(11);
+  await expect(page.locator(".category-link")).toHaveCount(GROUPS);
   for (const link of await page.locator(".category-link").all()) {
     await expect(link).toHaveAttribute("href", /^#group-/);
   }
@@ -23,13 +52,9 @@ test(`baseline structure keeps 11 categories and ${TOTAL} items`, async ({ page 
 test("V2 precision-console hierarchy uses indexes and quiet metadata", async ({ page }) => {
   await expect(page.locator("#site-search")).toHaveAttribute("placeholder", "搜索网址、描述或域名");
   await expect(page.locator(".category-icon, .section-icon")).toHaveCount(0);
-  await expect(page.locator(".category-index")).toHaveText([
-    "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
-  ]);
-  await expect(page.locator(".section-index")).toHaveText([
-    "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11",
-  ]);
-  await expect(page.locator(".section-unit")).toHaveText(Array(11).fill("LINKS"));
+  await expect(page.locator(".category-index")).toHaveText(INDEXES);
+  await expect(page.locator(".section-index")).toHaveText(INDEXES);
+  await expect(page.locator(".section-unit")).toHaveText(Array(GROUPS).fill("LINKS"));
   await expect(page.locator(".link-icon-frame").first()).toHaveCSS("width", "36px");
   await expect(page.locator(".link-icon-frame").first()).toHaveCSS("height", "36px");
   await expect(page.locator("#empty-clear svg")).toHaveCount(1);
@@ -157,44 +182,57 @@ test("dark cards remain distinct and tilt toward the pointer", async ({ page }, 
   ].map((property) => node.style.getPropertyValue(property)))).toEqual(["", "", "", ""]);
 });
 
-test("search samples return exact match counts", async ({ page }) => {
-  const samples = {
-    github: 10,
-    luogu: 6,
-    graphviz: 2,
-    工具: 38,
-    AI: 7,
-    不存在的网址: 0,
-    "github 教程": 0,
-  };
-  for (const [query, expected] of Object.entries(samples)) {
-    await page.locator("#site-search").fill(query);
-    await expect(page.locator(".link-card:not([hidden])")).toHaveCount(expected);
+test("group descriptions render between the heading line and the rule", async ({ page }) => {
+  const described = groups.filter((group) => group.description);
+  expect(described.length).toBeGreaterThan(0);
+  await expect(page.locator(".directory-section .section-description")).toHaveCount(described.length);
+  for (const group of described) {
+    const row = page.locator(`#group-${group.id} .section-heading-row`);
+    await expect(row.locator(".section-description")).toHaveText(group.description);
+    const order = await row.evaluate((node) =>
+      Array.from(node.children).map((child) => child.className),
+    );
+    expect(order).toEqual(["section-heading-line", "section-description", "section-rule"]);
   }
 });
 
+test("search samples match config-derived expectations", async ({ page }) => {
+  const samples = ["github", "luogu", "graphviz", "工具", "AI", "不存在的网址", "github 教程"];
+  for (const query of samples) {
+    await page.locator("#site-search").fill(query);
+    await expect(page.locator(".link-card:not([hidden])")).toHaveCount(expectedMatches(query));
+  }
+  // 语义不变量：无意义查询永远为 0。
+  expect(expectedMatches("不存在的网址")).toBe(0);
+});
+
 test("NFKC normalization handles case and fullwidth differences", async ({ page }) => {
-  await page.locator("#site-search").fill("ＧＩＴＨＵＢ");
-  await expect(page.locator(".link-card:not([hidden])")).toHaveCount(10);
-  await page.locator("#site-search").fill("GITHUB");
-  await expect(page.locator(".link-card:not([hidden])")).toHaveCount(10);
+  const expected = expectedMatches("github");
+  expect(expected).toBeGreaterThan(0);
+  for (const query of ["github", "GITHUB", "ＧＩＴＨＵＢ", "Github"]) {
+    await page.locator("#site-search").fill(query);
+    await expect(page.locator(".link-card:not([hidden])")).toHaveCount(expected);
+  }
+  const luogu = expectedMatches("LuOgU");
+  expect(luogu).toBeGreaterThan(0);
   await page.locator("#site-search").fill("LuOgU");
-  await expect(page.locator(".link-card:not([hidden])")).toHaveCount(6);
+  await expect(page.locator(".link-card:not([hidden])")).toHaveCount(luogu);
 });
 
 test("whitespace-only query restores the full directory", async ({ page }) => {
   await page.locator("#site-search").fill("github");
-  await expect(page.locator(".link-card:not([hidden])")).toHaveCount(10);
+  await expect(page.locator(".link-card:not([hidden])")).toHaveCount(expectedMatches("github"));
   await page.locator("#site-search").fill("   ");
   await expect(page.locator(".link-card:not([hidden])")).toHaveCount(TOTAL);
-  await expect(page.locator(".directory-section")).toHaveCount(11);
+  await expect(page.locator(".directory-section")).toHaveCount(GROUPS);
   await expect(page.locator("#result-count")).toHaveText(`${TOTAL} LINKS`);
   await expect(page.locator(".link-card mark")).toHaveCount(0);
 });
 
 test("clearing a query updates the screen reader result status", async ({ page }) => {
+  const github = expectedMatches("github");
   await page.locator("#site-search").fill("github");
-  await expect(page.locator("#search-status")).toHaveText(`找到 10 个网址，共 ${TOTAL} 个`);
+  await expect(page.locator("#search-status")).toHaveText(`找到 ${github} 个网址，共 ${TOTAL} 个`);
   await page.locator("#site-search").fill("");
   await expect(page.locator("#search-status")).toHaveText(`显示全部 ${TOTAL} 个网址`);
 });
@@ -204,7 +242,7 @@ test("multi-keyword search uses AND semantics without reordering", async ({ page
     cards.map((card) => card.getAttribute("href")),
   );
   await page.locator("#site-search").fill("github 教程");
-  await expect(page.locator(".link-card:not([hidden])")).toHaveCount(0);
+  await expect(page.locator(".link-card:not([hidden])")).toHaveCount(expectedMatches("github 教程"));
   await page.locator("#site-search").fill("知识 算法");
   const visible = await page.locator(".link-card:not([hidden])").evaluateAll((cards) =>
     cards.map((card) => card.getAttribute("href")),
@@ -214,9 +252,10 @@ test("multi-keyword search uses AND semantics without reordering", async ({ page
 });
 
 test("counts stay in sync across workbar, navigation and section headings", async ({ page }) => {
+  const github = expectedMatches("github");
   await page.locator("#site-search").fill("github");
-  await expect(page.locator("#result-count")).toHaveText(`10 / ${TOTAL}`);
-  await expect(page.locator("#search-status")).toHaveText(`找到 10 个网址，共 ${TOTAL} 个`);
+  await expect(page.locator("#result-count")).toHaveText(`${github} / ${TOTAL}`);
+  await expect(page.locator("#search-status")).toHaveText(`找到 ${github} 个网址，共 ${TOTAL} 个`);
   const sections = await page.locator(".directory-section:not([hidden])").all();
   expect(sections.length).toBeGreaterThan(0);
   for (const section of sections) {
@@ -322,7 +361,7 @@ test("IME composition does not update the list until commit", async ({ page }) =
     return { composing, committed };
   });
   expect(counts.composing).toBe(TOTAL);
-  expect(counts.committed).toBe(5);
+  expect(counts.committed).toBe(expectedMatches("图"));
 });
 
 test("highlight only uses safe mapped fragments in title, description and domain", async ({ page }) => {

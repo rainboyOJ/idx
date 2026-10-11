@@ -106,6 +106,7 @@ navigation:
       icon: assets/icons/skill-icons_github-dark.svg
   - id: '13'
     title: 仓库
+    description: 我写的 GitHub 仓库
     icon: assets/icons/logos_github-octocat.svg
     items:
     - title: roj-local-judge-lite

@@ -23,6 +23,7 @@ navigation:
   groups:
     - id: '1'
       title: 网站
+      description: 可选的分类简介，显示在分类标题下方
       items:
         - title: ROJ
           url: https://roj.ac.cn
