@@ -38,11 +38,11 @@ mixin directorySection(group, groupIndex)
           span.section-index(aria-hidden="true")= formatIndex(groupIndex)
           span.section-separator(aria-hidden="true") /
           span.section-title= group.title
+        if group.description
+          span.section-description= group.description
         span.section-meta
           span.section-count(data-total=group.items.length)= group.items.length
           span.section-unit LINKS
-      if group.description
-        p.section-description= group.description
       span.section-rule(aria-hidden="true")
     .link-grid
       each item in group.items

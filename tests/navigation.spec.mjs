@@ -182,18 +182,41 @@ test("dark cards remain distinct and tilt toward the pointer", async ({ page }, 
   ].map((property) => node.style.getPropertyValue(property)))).toEqual(["", "", "", ""]);
 });
 
-test("group descriptions render between the heading line and the rule", async ({ page }) => {
+test("group descriptions sit inside the heading line as quiet metadata", async ({ page }) => {
   const described = groups.filter((group) => group.description);
+  const undescribed = groups.filter((group) => !group.description);
   expect(described.length).toBeGreaterThan(0);
   await expect(page.locator(".directory-section .section-description")).toHaveCount(described.length);
+
+  for (const group of undescribed) {
+    await expect(page.locator(`#group-${group.id} .section-description`)).toHaveCount(0);
+  }
+
   for (const group of described) {
     const row = page.locator(`#group-${group.id} .section-heading-row`);
-    await expect(row.locator(".section-description")).toHaveText(group.description);
-    const order = await row.evaluate((node) =>
+    await expect(
+      row.locator(".section-heading-line > .section-description"),
+    ).toHaveText(group.description);
+    const rowOrder = await row.evaluate((node) =>
       Array.from(node.children).map((child) => child.className),
     );
-    expect(order).toEqual(["section-heading-line", "section-description", "section-rule"]);
+    expect(rowOrder).toEqual(["section-heading-line", "section-rule"]);
+    const lineOrder = await row.locator(".section-heading-line").evaluate((node) =>
+      Array.from(node.children).map((child) => child.className),
+    );
+    expect(lineOrder).toEqual(["section-heading", "section-description", "section-meta"]);
   }
+
+  // 颜色跟随 --color-text-tertiary，这样 prefers-contrast 加深时简介会一起变深。
+  const colors = await page.locator(".section-description").first().evaluate((node) => {
+    const probe = document.createElement("span");
+    probe.style.color = "var(--color-text-tertiary)";
+    document.body.append(probe);
+    const tertiary = getComputedStyle(probe).color;
+    probe.remove();
+    return { actual: getComputedStyle(node).color, tertiary };
+  });
+  expect(colors.actual).toBe(colors.tertiary);
 });
 
 test("search samples match config-derived expectations", async ({ page }) => {

@@ -572,7 +572,6 @@ mark {
   display: flex;
   min-width: 0;
   align-items: baseline;
-  justify-content: space-between;
   gap: var(--space-3);
 }
 
@@ -606,6 +605,7 @@ mark {
   display: inline-flex;
   flex: 0 0 auto;
   gap: 1ch;
+  margin-left: auto;
   color: var(--color-text-tertiary);
   font-size: 12px;
   line-height: 16px;
@@ -613,11 +613,22 @@ mark {
   white-space: nowrap;
 }
 
+/* 分组简介：与标题同行的次要信息，颜色跟随 --color-text-tertiary，
+   以便在高对比度模式下一起被加深；空间不足时先压缩它自己。*/
 .section-description {
-  margin: 0;
-  color: var(--color-text-secondary);
-  font-size: 13px;
-  line-height: 18px;
+  flex: 0 100 auto;
+  min-width: 0;
+  overflow: hidden;
+  color: var(--color-text-tertiary);
+  font-size: 12px;
+  line-height: 16px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.section-description::before {
+  content: "·";
+  margin-right: 6px;
 }
 
 .section-rule {
