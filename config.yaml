@@ -98,13 +98,17 @@ navigation:
       url: https://pseudocode.roj.ac.cn/
       description: 给rbook使用
       icon: assets/icons/dinkie-icons_code-filled.svg
-    - title: excalidraw
-      url: https://excalidraw.roj.ac.cn/
-      description: host on roj
-      icon: assets/icons/c3e150f958028cbe575a96f9e901ad47.png
+    #- title: excalidraw
+    #  url: https://excalidraw.roj.ac.cn/
+    #  description: host on roj
+    #  icon: assets/icons/c3e150f958028cbe575a96f9e901ad47.png
     - title: OI文章收集
       url: https://gist.github.com/Rainboylvx/4223067a0ab2561280fa7996d7c9ac06
       icon: assets/icons/skill-icons_github-dark.svg
+    - title: graph-mini
+      url: https://graph-mini.roj.ac.cn/
+      description: 我写的数据转树与图的小工具
+      icon: assets/icons/graph-mini.svg
   - id: '13'
     title: 仓库
     description: 我写的 GitHub 仓库
