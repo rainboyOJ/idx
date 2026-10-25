@@ -411,6 +411,34 @@ test("malicious query text never becomes HTML nodes", async ({ page }) => {
   await expect(page.locator("mark")).toHaveCount(0);
 });
 
+test("category rail keeps index, title and count on one baseline", async ({ page }) => {
+  // 回归：中间列曾塔成 0px（minmax(0, auto)），计数被顶到标题下方而重叠。
+  for (const width of [320, 390, 768, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.waitForTimeout(80);
+    const problems = await page.evaluate(() => {
+      const bad = [];
+      for (const link of document.querySelectorAll(".category-link")) {
+        const box = (selector) => link.querySelector(selector).getBoundingClientRect();
+        const index = box(".category-index");
+        const title = box(".category-title");
+        const count = box(".category-count");
+        const name = link.querySelector(".category-title").textContent;
+        // 行高不同（标题 22px、序号/计数 16px），按基线对齐后 top 本就不同，
+        // 因此用「垂直区间重叠」判断是否在同一行。
+        const sameLine = (a, b) =>
+          Math.min(a.bottom, b.bottom) - Math.max(a.top, b.top) > Math.min(a.height, b.height) / 2;
+        if (title.width < 1) bad.push(`${name}: 标题列宽度为 ${title.width}`);
+        if (title.right > count.left) bad.push(`${name}: 标题与计数重叠 ${(title.right - count.left).toFixed(1)}px`);
+        if (!sameLine(title, count)) bad.push(`${name}: 标题与计数不在同一行`);
+        if (!sameLine(title, index)) bad.push(`${name}: 标题与序号不在同一行`);
+      }
+      return bad;
+    });
+    expect(problems, `${width}px: ${problems.join(" | ")}`).toEqual([]);
+  }
+});
+
 test("category click sets aria-current and scrolls the rail on narrow screens", async ({ page }) => {
   const isNarrow = (await page.viewportSize()).width < 1024;
   if (isNarrow) await page.emulateMedia({ reducedMotion: "reduce" });

@@ -485,7 +485,9 @@ mark {
 
 .category-link {
   display: grid;
-  grid-template-columns: auto minmax(0, auto) auto;
+  /* 中间列必须是内容自适应：minmax(0, auto) 会让标题列塔成 0px，
+     导致计数被顶到标题下方而重叠。桌面端另有 28px / 1fr 的覆盖规则。*/
+  grid-template-columns: auto auto auto;
   flex: 0 0 auto;
   height: var(--control-height);
   min-width: 0;
