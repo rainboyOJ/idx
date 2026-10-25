@@ -90,10 +90,6 @@ navigation:
       url: https://blog.roj.ac.cn
       description: 博客
       icon: assets/icons/f39ee8f14a6900c5e43a415504878e8f.png
-    - title: dsa3_new
-      url: https://dsa3.roj.ac.cn/new/
-      description: 还是我写的动画
-      icon: assets/icons/a36dbb45e15343a59837f48a2b64bf67.png
     - title: 在线伪代码
       url: https://pseudocode.roj.ac.cn/
       description: 给rbook使用
